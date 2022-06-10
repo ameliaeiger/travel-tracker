@@ -14,9 +14,6 @@ import TripRepo from './TripRepo.js';
 import './images/turing-logo.png'
 
 
-console.log('This is the JavaScript entry file - your code begins here.');
-
-
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
     .then(data => {
 
@@ -27,16 +24,26 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
 
         travelerDataHelper(travelersRepo, tripsRepo, destinationsRepo);
 
-        console.log("----Travelers Repository: ", travelersRepo);
-        console.log("----Destinations Repository: ", destinationsRepo);
-        console.log("----Trips Repository: ", tripsRepo);
+        // console.log("----Travelers Repository: ", travelersRepo);
+        // console.log("----Destinations Repository: ", destinationsRepo);
+        // console.log("----Trips Repository: ", tripsRepo);
     })
+
+
+    // TRAVELER
 
     function travelerDataHelper(travelersRepo, tripsRepo, destinationsRepo){
         let travelerData = tripsRepo.returnAllUserTrips(5);
         let traveler = travelersRepo.createNewTraveler(5, travelerData);
 
-        console.log("-Annual Cost: ", traveler.calculateAnnualCost(destinationsRepo));
+        let keys = traveler.getDestinationIDs();
+        let travelerDestinations = destinationsRepo.getDestById(keys);
+        traveler.getDestinationData(travelerDestinations);
+
+    }
+
+    function destinationDataHelper() {
+
     }
 
     
