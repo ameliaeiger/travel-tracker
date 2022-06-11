@@ -10,14 +10,18 @@
   <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
   <section class="new-trip-request">
     <form class="new-trip-form">
+
+
       <label for="date-input">Start Date:</label>
-      <input class="user-input date-input" type="date" id="date-input-start" name="date" required/>
+      <input class="user-input date-input" type="date" id="date-input-start" name="date">
       <label for="date-input">End Date:</label>
-      <input class="user-input date-input" type="date" id="date-input-end" name="date" required/>
+      <input class="user-input date-input" type="date" id="date-input-end" name="date">
+      <label for="numTravelers">Num. Travelers</label>
+      <input type="number" id="num-travelers" name="num-travelers">
       <select id="destination-options" name="destinations">
       </select>
       <input type="reset">
-      <input type="submit" value="Submit">
+      <button class="submit" id="submit">Submit</button>
     </form>
   </section>
     <div class="image-grid-container">

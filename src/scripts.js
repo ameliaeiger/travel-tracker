@@ -19,6 +19,32 @@ let travelerTrips = document.getElementById("traveler-trips-display-past");
 let destinationSelect = document.getElementById("destination-options");
 let startDate = document.getElementById("date-input-start");
 let endDate = document.getElementById("date-input-end");
+let destinationInput = document.getElementById("destination-options");
+let numTravelers = document.getElementById("num-travelers");
+let submit = document.getElementById("submit");
+
+// Event Listeners
+
+submit.addEventListener("click", submitTrip);
+
+
+function submitTrip(e){
+    e.preventDefault()
+    //  Date
+    let start = dayjs(startDate.value);
+    let end = dayjs(endDate.value);
+    console.log(startDate.value, endDate.value);
+    let duration = end.diff(start, "day");
+    console.log(duration);
+
+    // Destination
+    let dest = destinationInput.value;
+    console.log(dest)
+
+    // Number of travelers
+    let num = numTravelers.value;
+    console.log(num);
+};
 
 
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
@@ -31,7 +57,6 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
 
         travelerDataHelper(travelersRepo, tripsRepo, destinationsRepo);
 
-        //CURRENTLY TESTING
         addDestinationOptions(destinationsRepo);
 
         // console.log("----Travelers Repository: ", travelersRepo);
@@ -64,10 +89,6 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
             imageNode.src = destination.image;
             imageNode.alt = destination.alt;
             travelerTrips.appendChild(imageNode);
-
-            // let imageHTML = document.createTextNode(`src = "${destination.image}" alt = "${destination.alt}`);
-            // let stuff = imageNode.appendChild(imageHTML);
-            // travelerTrips.appendChild(stuff);
 
             // Create element for text -- save for later use
             // let text = `Destination: ${destination.destination} Image: ${destination.image} Alt: ${destination.alt}`
