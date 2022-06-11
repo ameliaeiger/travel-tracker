@@ -17,6 +17,8 @@ import TripRepo from './TripRepo.js';
 // GLOBALs
 let travelerTrips = document.getElementById("traveler-trips-display-past");
 let destinationSelect = document.getElementById("destination-options");
+let startDate = document.getElementById("date-input-start");
+let endDate = document.getElementById("date-input-end");
 
 
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
@@ -86,12 +88,23 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
         let destinationList = destinations.map(destination => {
             return destination.destination
         });
-        destinationList.forEach(destination => {
+        let sortedList = destinationList.sort((a, b) => {
+            let splitA = a.split(",")
+            let countryA = splitA[1]
+            let splitB = b.split(",")
+            let countryB = splitB[1]
+            
+            if (countryA > countryB){
+                return 1
+            } else {
+                return -1
+            }
+        });
+        sortedList.forEach(destination => {
             let node = document.createElement("option")
             node.value = destination
             node.innerText = destination
             destinationSelect.appendChild(node)
-
         });
     };
 
