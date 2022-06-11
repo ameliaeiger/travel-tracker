@@ -1,17 +1,21 @@
 // This is the JavaScript entry file - your code begins here
 // Do not delete or rename this file ********
 
-// An example of how you tell webpack to use a CSS (SCSS) file
+// Libraries
+const dayjs = require('dayjs');
+
+// Imports
 import { allTravelersData, allTripsData, allDestinationsData } from './apiCalls';
 import './css/styles.css';
+import './images/turing-logo.png'
 import DestinationRepo from './DestinationRepo';
 import Destination from './Destination';
 import TravelerRepo from './TravelerRepo';
 import Traveler from './Traveler';
 import TripRepo from './TripRepo.js';
 
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/turing-logo.png'
+// GLOBALs
+let travelerTrips = document.getElementById("traveler-trips-display-past");
 
 
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
@@ -35,16 +39,43 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
     function travelerDataHelper(travelersRepo, tripsRepo, destinationsRepo){
         let travelerData = tripsRepo.returnAllUserTrips(5);
         let traveler = travelersRepo.createNewTraveler(5, travelerData);
-
         let keys = traveler.getDestinationIDs();
         let travelerDestinations = destinationsRepo.getDestById(keys);
-        traveler.getDestinationData(travelerDestinations);
+        createImageNodes(travelerDestinations);
+
+        // TESTING: findPastTrips
+        traveler.findPastTrips();
 
     }
 
-    function destinationDataHelper() {
+    function createImageNodes(travelerDestinations) {
+        travelerDestinations.forEach(function(destination, index){
+            // Create element for each image
+            let imageNode = document.createElement("img");
+            let classString = `img${index}`
+            imageNode.classList.add(classString)
+            imageNode.classList.add("traveler-image");
+            imageNode.src = destination.image;
+            imageNode.alt = destination.alt;
+            travelerTrips.appendChild(imageNode);
 
-    }
+            // let imageHTML = document.createTextNode(`src = "${destination.image}" alt = "${destination.alt}`);
+            // let stuff = imageNode.appendChild(imageHTML);
+            // travelerTrips.appendChild(stuff);
+
+            // Create element for text
+            let text = `Destination: ${destination.destination} Image: ${destination.image} Alt: ${destination.alt}`
+            let newText = document.createTextNode(text);
+
+            // Append
+            // travelerTrips.appendChild(newText);
+        });
+    };
+
+    function displayDestinationImages(classString, imageHTML) {
+        let node = document.querySelector(classString);
+        node.innerHTML = imageHTML;
+    };
 
     
 

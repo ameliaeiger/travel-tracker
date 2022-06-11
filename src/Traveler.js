@@ -1,16 +1,11 @@
 import DestinationRepo from "./DestinationRepo";
+const dayjs = require('dayjs');
 
 class Traveler{
     constructor(id, trips) {
         this.id = id;
         this.allTrips = trips;
         this.destinationIDs = this.getDestinationIDs();
-
-
-
-        // Stuff that I might want to add later
-        // this.trips = trips;
-        // this.annualSpent = 0;
     };
     calculateAnnualCost(destinationrepo){
 
@@ -18,15 +13,12 @@ class Traveler{
     getDestinationIDs() {
         return this.allTrips.map(destination => destination.destinationID);
     };
-    getDestinationData(travelerDestinationObj){
-        travelerDestinationObj.map(function(destination){
-            let dataObj = {
-                ["destination"]:destination.destination,
-                ["image"]:destination.image,
-                ["alt"]:destination.alt
-            }
-            console.log(dataObj);
-            return dataObj;
+    findPastTrips(){
+        console.log(this.allTrips)
+        this.allTrips.filter(function(trip){
+            console.log(trip.date);
+            console.log(dayjs(new Date()).format("YYYY/MM/DD"));
+
         });
     };
 

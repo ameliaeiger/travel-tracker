@@ -1,3 +1,27 @@
 body {
+  width: 100%;
+  height: auto;
   background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+}
+
+.traveler-trips-grid.past {
+  display: grid;
+  grid-template-columns: 300px 300px 300px 300px;
+  grid-template-rows: 300px;
+  grid-auto-rows: 300px;
+  grid-auto-columns: 300px;
+  row-gap: 10px;
+  column-gap: 50px;
+}
+
+.image-grid-containter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.traveler-image {
+  display: flex;
+  height: 100%;
+  width: 100%;
 }
