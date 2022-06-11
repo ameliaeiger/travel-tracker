@@ -16,6 +16,7 @@ import TripRepo from './TripRepo.js';
 
 // GLOBALs
 let travelerTrips = document.getElementById("traveler-trips-display-past");
+let destinationSelect = document.getElementById("destination-options");
 
 
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
@@ -27,6 +28,9 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
 
 
         travelerDataHelper(travelersRepo, tripsRepo, destinationsRepo);
+
+        //CURRENTLY TESTING
+        addDestinationOptions(destinationsRepo);
 
         // console.log("----Travelers Repository: ", travelersRepo);
         // console.log("----Destinations Repository: ", destinationsRepo);
@@ -43,7 +47,7 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
         let travelerDestinations = destinationsRepo.getDestById(keys);
         createImageNodes(travelerDestinations);
 
-        // TESTING: findPastTrips
+        // TESTING: findPastTrips -- not complete. save for later use.
         traveler.findPastTrips();
 
     }
@@ -63,11 +67,11 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
             // let stuff = imageNode.appendChild(imageHTML);
             // travelerTrips.appendChild(stuff);
 
-            // Create element for text
-            let text = `Destination: ${destination.destination} Image: ${destination.image} Alt: ${destination.alt}`
-            let newText = document.createTextNode(text);
+            // Create element for text -- save for later use
+            // let text = `Destination: ${destination.destination} Image: ${destination.image} Alt: ${destination.alt}`
+            // let newText = document.createTextNode(text);
 
-            // Append
+            // Append -- save for later use
             // travelerTrips.appendChild(newText);
         });
     };
@@ -75,6 +79,20 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
     function displayDestinationImages(classString, imageHTML) {
         let node = document.querySelector(classString);
         node.innerHTML = imageHTML;
+    };
+    
+    function addDestinationOptions(destinationsRepo) {
+        let destinations = destinationsRepo.destinations
+        let destinationList = destinations.map(destination => {
+            return destination.destination
+        });
+        destinationList.forEach(destination => {
+            let node = document.createElement("option")
+            node.value = destination
+            node.innerText = destination
+            destinationSelect.appendChild(node)
+
+        });
     };
 
     

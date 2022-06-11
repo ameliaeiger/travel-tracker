@@ -8,7 +8,17 @@
 </head>
 <body>
   <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
-  <p>Dashboard</p>
+  <section class="new-trip-request">
+    <form class="new-trip-form">
+      <label for="date-input">Date:</label>
+      <input class="user-input date-input" type="date" id="date-input-start" name="date" required/>
+      <input class="user-input date-input" type="date" id="date-input-end" name="date" required/>
+      <select id="destination-options" name="destinations">
+      </select>
+      <input type="reset">
+      <input type="submit" value="Submit">
+    </form>
+  </section>
     <div class="image-grid-container">
       <p class="traveler-trips-grid past" id="traveler-trips-display-past"></p>
     </div>
