@@ -8,29 +8,82 @@
 </head>
 <body>
   <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
+
+  <!-- Login -->
+  <header class="header">
+    <div id="welcome-user"></div>
+    <button id="request-login">Log In</button>
+  </header>
+
+  <!-- Trip Request Form -->
   <section class="new-trip-request">
+    <div class="form-text">Where to?</div>
     <form class="new-trip-form">
-
-
-      <label for="date-input">Start Date:</label>
-      <input class="user-input date-input" type="date" id="date-input-start" name="date">
-      <label for="date-input">End Date:</label>
-      <input class="user-input date-input" type="date" id="date-input-end" name="date">
-      <label for="numTravelers">Num. Travelers</label>
-      <input type="number" id="num-travelers" name="num-travelers">
+      <div class="form-input date">
+        <label for="date-input">Check-in:</label>
+        <input class="user-input date-input" type="date" id="date-input-start" name="date">
+      </div>
+      <div class="form-input date">
+        <label for="date-input">Check-out:</label>
+        <input class="user-input date-input" type="date" id="date-input-end" name="date">
+      </div>
+      <div class="form-input">
+        <label for="numTravelers">Travelers:</label>
+        <input type="number" id="num-travelers" name="num-travelers">
+      </div>
       <select id="destination-options" name="destinations">
       </select>
-      <input type="reset">
-      <button class="submit" id="submit">Submit</button>
+      <input type="reset" class="new-trip-button" value="Clear">
+      <button class="submit new-trip-button" id="submit">Submit</button>
     </form>
   </section>
+
+<!-- Proposed Trip -->
+<section class="proposed-trip">
+  <div class="proposed-trip-cost" id="proposed-trip-container">
+    <div id="flight-cost"></div>
+    <div id="lodging-cost"></div>
+    <div id="trip-sum"></div>
+    <div id="total-cost"></div>
+  </div>
+</section>
+
+<!-- Past Trips -->
+
     <div class="image-grid-container">
       <p class="traveler-trips-grid past" id="traveler-trips-display-past"></p>
     </div>
-  <p>$$$ Spent on trips this year + fee</p>
+  <p></p>
   
+<!-- Modal -->
+<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">
+          Login
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="modal-1-content">
+        <p>
+          Please enter your username and password.
+        </p>
+        <form>
+          <label for="username">Username:</label>
+          <input type="text" id="username"><br>
+          <label for="password">Password:</label>
+          <input type="password" id="password">
+        </form>
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary" id="login-button">Continue</button>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+      </footer>
+    </div>
+  </div>
+</div>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
-  <script src="bundle.js"></script>
-
+<script src="bundle.js"></script>
 </body>
 </html>
