@@ -1,12 +1,12 @@
 // This is the JavaScript entry file - your code begins here
 // Do not delete or rename this file ********
 
-// Libraries
+// LIBRARIES
 const dayjs = require('dayjs');
 import MicroModal from 'micromodal'; 
 
 
-// Imports
+// IMPORTS
 import { allTravelersData, allTripsData, allDestinationsData } from './apiCalls';
 import DestinationRepo from './DestinationRepo';
 import Destination from './Destination';
@@ -18,7 +18,6 @@ import './images/turing-logo.png'
 
 
 // GLOBALS
-
 let currentUserID;
 let travelerRepo;
 let tripRepo;
@@ -47,87 +46,51 @@ const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
 
-// Event Listeners
+// EVENT LISTENERS
 window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
 
-// Promise All
+
+// FUNCTIONS
+//---       Promise All
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
     .then(data => {
 
         travelerRepo = new TravelerRepo(data[0].travelers);
         tripRepo = new TripRepo(data[1].trips);
         destRepo = new DestinationRepo(data[2].destinations);
-
         addDestinationOptions(destRepo);
+    });
 
-
-        // travelerDataHelper(travelersRepo, tripsRepo, destinationsRepo);
-
-
-        // console.log("----Travelers Repository: ", travelersRepo);
-        // console.log("----Destinations Repository: ", destinationsRepo);
-        // console.log("----Trips Repository: ", tripsRepo);
-    })
-
-
-// MicroModal
+//---       MicroModal
 function toggleLogin() {
     MicroModal.show("modal-1");
     // MicroModal.close("modal-1")
 }
 
-
+//---        Login
 function userLogin() {
     if (username.value == "traveler50" && password.value == "travel"){
         currentUserID = 50;
-        // allTravelersData.then(data => {
-        //     let travelerObj = data.travelers.find(traveler => traveler.id == currentUserID);
-        //     let allTrips = tripRepo.returnAllUserTrips(travelerObj.id);
-        //     let newOne = new Traveler (travelerObj.id, travelerObj.name, travelerObj.travelerType, allTrips);
-        //     renderDisplay(tripRepo, destRepo, newOne);
-        // });
-
-        console.log(destRepo, travelerRepo, tripRepo)
-
         let currentUser = travelerRepo.getTraveler(currentUserID);
         let allTrips = tripRepo.returnAllUserTrips(currentUser.id);
         let traveler = new Traveler(currentUser.id, currentUser.name, currentUser.travelerType, allTrips, destRepo);
         renderDisplay(traveler, destRepo, tripRepo);
-
-
-
         MicroModal.close("modal-1");
-
-
-
-
 
     } else if (username.value && password.value){
         currentUserID = Math.floor(Math.random() * 50);
-        allTravelersData.then(data => {
-            let travelerObj = data.travelers.find(traveler => traveler.id == currentUserID);
-            let newOne = new Traveler (travelerObj.id, travelerObj.name, travelerObj.travelerType);
-            renderTraveler(newOne);
-        });
+        let currentUser = travelerRepo.getTraveler(currentUserID);
+        let allTrips = tripRepo.returnAllUserTrips(currentUser.id);
+        let traveler = new Traveler(currentUser.id, currentUser.name, currentUser.travelerType, allTrips, destRepo);
+        renderDisplay(traveler, destRepo, tripRepo);
         MicroModal.close("modal-1");
     };
 };
 
-function renderDisplay(traveler, destRepo, tripRepo) {
-    renderTraveler(traveler, destRepo)
-}
-
-function renderTraveler(travObj, destRepo) {
-    welcomeUser.innerHTML = `Welcome, ${travObj.name}!`;
-    let keys = travObj.pastTripKeys;
-    let allPastDestinations = destRepo.getDestById(keys);
-    createImageNodes(allPastDestinations);
-};
-
-
+//---       New Trip
 function submitTrip(e) {
     e.preventDefault()
     //  Date
@@ -170,83 +133,74 @@ function findCost(data, newTrip) {
         "lodging": lodgingCost,
         "sum": (Math.round(sum * 10) / 10),
         "sumFee": (Math.round(sumFee * 10) / 10)
-    }
+    };
     return object;
-}
+};
 
+//---        DOM
+function renderDisplay(traveler, destRepo, tripRepo) {
+    renderTraveler(traveler, destRepo)
+};
 
+function renderTraveler(travObj, destRepo) {
+    welcomeUser.innerHTML = `Welcome, ${travObj.name}!`;
+    let keys = travObj.pastTripKeys;
+    let allPastDestinations = destRepo.getDestById(keys);
+    createImageNodes(allPastDestinations);
+};
 
+function addDestinationOptions(destinationsRepo) {
+    let destinations = destinationsRepo.destinations
+    let destinationList = destinations.map(destination => {
+        return destination.destination
+    });
+    let sortedList = destinationList.sort((a, b) => {
+        let splitA = a.split(",")
+        let countryA = splitA[1]
+        let splitB = b.split(",")
+        let countryB = splitB[1]
+        
+        if (countryA > countryB){
+            return 1
+        } else {
+            return -1
+        }
+    });
+    sortedList.forEach(destination => {
+        let node = document.createElement("option")
+        node.value = destination
+        node.innerText = destination
+        destinationSelect.appendChild(node)
+    });
+};
 
-    // TRAVELER
+function createImageNodes(pastTrips) {
+    console.log(pastTrips)
+    pastTrips.forEach(function(destination, index){
+        // Create element for each image
+        let imageNode = document.createElement("img");
+        let classString = `img${index}`
+        imageNode.classList.add(classString)
+        imageNode.classList.add("traveler-image");
+        imageNode.src = destination.image;
+        imageNode.alt = destination.alt;
+        console.log(imageNode)
+        travelerPastTrips.appendChild(imageNode);
 
-    function travelerDataHelper(travelersRepo, tripsRepo, destinationsRepo){
-        let name = travelersRepo.getTraveler(currentUserID).name;
-        let travelerData = tripsRepo.returnAllUserTrips(currentUserID);
-        let traveler = new Traveler(currentUserID, name, travelerData);
+        // Create element for text -- save for later use
+        // let text = `Destination: ${destination.destination} Image: ${destination.image} Alt: ${destination.alt}`
+        // let newText = document.createTextNode(text);
 
-        console.log(travelersRepo)
-        console.log(traveler)
+        // Append -- save for later use
+        // travelerTrips.appendChild(newText);
+    });
+};
 
+function displayDestinationImages(classString, imageHTML) {
+    let node = document.querySelector(classString);
+    node.innerHTML = imageHTML;
+};
 
-        let keys = traveler.getDestinationIDs();
-        let travelerDestinations = destinationsRepo.getDestById(keys);
-        createImageNodes(travelerDestinations);
-
-        // TESTING: findPastTrips -- not complete. save for later use.
-        traveler.findPastTrips();
-    }
-
-    function createImageNodes(pastTrips) {
-        console.log(pastTrips)
-        pastTrips.forEach(function(destination, index){
-            // Create element for each image
-            let imageNode = document.createElement("img");
-            let classString = `img${index}`
-            imageNode.classList.add(classString)
-            imageNode.classList.add("traveler-image");
-            imageNode.src = destination.image;
-            imageNode.alt = destination.alt;
-            console.log(imageNode)
-            travelerPastTrips.appendChild(imageNode);
-
-            // Create element for text -- save for later use
-            // let text = `Destination: ${destination.destination} Image: ${destination.image} Alt: ${destination.alt}`
-            // let newText = document.createTextNode(text);
-
-            // Append -- save for later use
-            // travelerTrips.appendChild(newText);
-        });
-    };
-
-    function displayDestinationImages(classString, imageHTML) {
-        let node = document.querySelector(classString);
-        node.innerHTML = imageHTML;
-    };
-    
-    function addDestinationOptions(destinationsRepo) {
-        let destinations = destinationsRepo.destinations
-        let destinationList = destinations.map(destination => {
-            return destination.destination
-        });
-        let sortedList = destinationList.sort((a, b) => {
-            let splitA = a.split(",")
-            let countryA = splitA[1]
-            let splitB = b.split(",")
-            let countryB = splitB[1]
-            
-            if (countryA > countryB){
-                return 1
-            } else {
-                return -1
-            }
-        });
-        sortedList.forEach(destination => {
-            let node = document.createElement("option")
-            node.value = destination
-            node.innerText = destination
-            destinationSelect.appendChild(node)
-        });
-    };
 
     
 
