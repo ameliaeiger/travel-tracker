@@ -83,13 +83,68 @@ button:hover {
 }
 
 /* Agency Display */
-.test {
+.agency-dashboard {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: auto;
+  justify-content: center;
+  align-items: center;
 }
+.trip-request-agency {
+  display: flex;
+  justify-content: space-between;
+  max-width: 900px;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  margin: 50px;
+  box-shadow: 2px 2px 5px;
+}
+
+.agency-greeting-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.greeting-text {
+  padding: 40px 25px;
+  margin: 0px;
+}
+
+.x-button {
+  padding: 3px;
+  position: relative;
+  bottom: 30%;
+  color: gray;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0);
+}
+
+.agency-display-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.agency-display {
+  display: flex;
+  height: 500px;
+  width: 500px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+
+  padding: 50px;
+  background-color: rgba(255, 255, 255, 0.9);
+
+}
+
+
 
 
 /* Trip Request Form */

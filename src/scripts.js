@@ -47,9 +47,7 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
-//---       Agency
-const navbar = document.getElementById("navbar-wrapper");
-const agencyView = document.getElementById("agency-wrapper");
+
 
 
 
@@ -57,14 +55,13 @@ const agencyView = document.getElementById("agency-wrapper");
 
 
 // EVENT LISTENERS
-window.addEventListener("load", toggleLogin);
+// window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
 
 
 //      ------------    o _____ o    ------------ //
-
 
 
 // FUNCTIONS
@@ -106,17 +103,37 @@ function userLogin() {
     };
 };
 
+
+//---       Agency
+const agencyDashboard = document.getElementById("agency-dashboard");
+const agencyTripRequests = document.getElementById("trip-request-agency");
+const welcomeMessage = document.getElementById("greeting-text");
+const dismissButton = document.getElementById("x-button");
+const navbar = document.getElementById("navbar");
+const agencyDisplay = document.getElementById("agency-display-wrapper");
+
+renderAgencyDisplay()
+// Agency Event Listeners
+dismissButton.addEventListener("click", dismissAgencyGreeting);
+
+
+//---       Agency DOM Functions
+
 function renderAgencyDisplay() {
     welcomeUser.innerHTML = `Travel Tracker: Agency Edition`;
-    newTripForm.innerHTML = "Welcome! You have 2 new pending requests.";
+    welcomeMessage.innerText += "Welcome! You have 2 new pending requests.";
 
-    renderAnimation();
-    navbar.classList.remove("hidden");
-    navbar.classList.add("appear");
-    agencyView
+    agencyDashboard.classList.remove("hidden");
+    agencyDashboard.classList.add("appear");
+    
 
+}
 
-
+function dismissAgencyGreeting() {
+    agencyTripRequests.classList.add("hidden");
+    
+    agencyDisplay.classList.remove("hidden");
+    agencyDisplay.classList.add("appear");
 
 }
 

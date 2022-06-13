@@ -16,14 +16,6 @@
   </header>
 
 
-  <div class="agency-wrapper" id="agency-wrapper">
-  <!-- Agency Navbar -->
-  <div class="navbar-wrapper hidden" id="navbar-wrapper">
-    <section class="navbar">
-      HELLO
-    </section>
-  </div>
-
   <!-- Trip Request Form -->
   <div class="trip-request-wrapper">
     <section class="new-trip-request hidden" id="new-trip-request">
@@ -50,7 +42,37 @@
         <!-- </div> -->
       </form>
     </section>
+
+
+
+    <!-- Agency Start -->
+    <div class="agency-dashboard hidden" id="agency-dashboard">
+      <section class="trip-request-agency" id="trip-request-agency">
+        <div class="agency-greeting-wrapper">
+          <p class="greeting-text" id="greeting-text"></p>
+          <button class="x-button" id="x-button">x</button>
+        </div>
+      </section>
+      <div class="agency-display-wrapper hidden">
+        <section class="navbar" id="navbar">
+          <button>View Pending</button>
+          <button>See Profits</button>
+          <button>Manage Trips</button>
+        </section>
+        <section class="agency-display" id="agency-display">
+          Display Content or whatever
+        </section>
+
+      </div>
+      </div>
+    <!-- Agency End -->
+
+
+
+
+
   </div>
+
 
 <!-- Proposed Trip -->
 <section class="proposed-trip">
@@ -97,7 +119,6 @@
       </footer>
     </div>
   </div>
-</div>
 </div>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
 <script src="bundle.js"></script>
