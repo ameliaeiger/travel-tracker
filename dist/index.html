@@ -41,6 +41,15 @@
           <button class="submit new-trip-button" id="submit">Submit</button>
         <!-- </div> -->
       </form>
+
+      <section class="proposed-trip" id="proposed-trip">
+        <div class="proposed-trip-cost hidden" id="proposed-trip-container">
+          <div id="flight-cost"></div>
+          <div id="lodging-cost"></div>
+          <div id="trip-sum"></div>
+          <div id="total-cost"></div>
+        </div>
+      </section>
     </section>
 
 
@@ -53,12 +62,15 @@
           <button class="x-button" id="x-button">x</button>
         </div>
       </section>
-      <div class="agency-display-wrapper hidden">
+
+      <div class="agency-display-wrapper hidden" id="agency-display-wrapper">
+
         <section class="navbar" id="navbar">
-          <button>View Pending</button>
-          <button>See Profits</button>
-          <button>Manage Trips</button>
+          <button class="top" value="pending">View Pending</button>
+          <button value="profits">See Profits</button>
+          <button class="bottom" value="today">Today's Trips</button>
         </section>
+
         <section class="agency-display" id="agency-display">
           Display Content or whatever
         </section>
@@ -75,14 +87,14 @@
 
 
 <!-- Proposed Trip -->
-<section class="proposed-trip">
+<!-- <section class="proposed-trip">
   <div class="proposed-trip-cost" id="proposed-trip-container">
     <div id="flight-cost"></div>
     <div id="lodging-cost"></div>
     <div id="trip-sum"></div>
     <div id="total-cost"></div>
   </div>
-</section>
+</section> -->
 
 <!-- Past Trips -->
 

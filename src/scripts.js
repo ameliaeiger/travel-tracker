@@ -35,6 +35,8 @@ const destinationInput = document.getElementById("destination-options");
 const numTravelers = document.getElementById("num-travelers");
 const submit = document.getElementById("submit");
 //---       Proposed Trip
+const proposedTripContainer = document.getElementById("proposed-trip-container");
+const proposedTrip = document.getElementById("proposed-trip");
 const proposedTripTotal = document.getElementById("total-cost");
 const lodgingCost = document.getElementById("lodging-cost");
 const proposedTripSum = document.getElementById("trip-sum");
@@ -83,6 +85,7 @@ function toggleLogin() {
 
 //---        Login
 function userLogin() {
+    resetDisplay();
     if (username.value == "traveler50" && password.value == "travel"){
         currentUserID = 50;
         let currentUser = travelerRepo.getTraveler(currentUserID);
@@ -110,14 +113,23 @@ const agencyTripRequests = document.getElementById("trip-request-agency");
 const welcomeMessage = document.getElementById("greeting-text");
 const dismissButton = document.getElementById("x-button");
 const navbar = document.getElementById("navbar");
-const agencyDisplay = document.getElementById("agency-display-wrapper");
+const agencyDisplayWrapper = document.getElementById("agency-display-wrapper");
+const agencyDisplay = document.getElementById("agency-display");
+
 
 renderAgencyDisplay()
 // Agency Event Listeners
 dismissButton.addEventListener("click", dismissAgencyGreeting);
-
+navbar.addEventListener("click", function(event) {
+    console.log(event.target.value)
+    agencyDisplay.innerText = event.target.value
+});
 
 //---       Agency DOM Functions
+
+function toggleAgencyView() {
+
+}
 
 function renderAgencyDisplay() {
     welcomeUser.innerHTML = `Travel Tracker: Agency Edition`;
@@ -125,17 +137,30 @@ function renderAgencyDisplay() {
 
     agencyDashboard.classList.remove("hidden");
     agencyDashboard.classList.add("appear");
-    
-
 }
 
 function dismissAgencyGreeting() {
     agencyTripRequests.classList.add("hidden");
-    
-    agencyDisplay.classList.remove("hidden");
-    agencyDisplay.classList.add("appear");
+
+    agencyDisplayWrapper.classList.remove("hidden");
+    agencyDisplayWrapper.classList.add("appear");
 
 }
+
+
+
+function resetDisplay() {
+    welcomeUser.innerHTML = "";
+    travelerPastTrips.innerHTML = "";
+    welcomeMessage.innerHTML = "";
+    newTripForm.className = "new-trip-request hidden";
+    agencyDisplayWrapper.className = "agency-display-wrapper hidden";
+    agencyDashboard.className = "agency-dashboard hidden";
+    proposedTripContainer.className = "proposed-trip-cost hidden";
+
+
+}
+
 
 
 //---       New Trip
@@ -161,11 +186,7 @@ function submitTrip(e) {
     allDestinationsData.then(data => {
         data.destinations;
         let costObj = findCost(data.destinations, newTrip);
-        console.log(costObj);
-        flightCost.innerHTML = `Flight Cost: ${costObj.flight}`;
-        lodgingCost.innerHTML = `Lodging Cost: ${costObj.lodging}`;
-        proposedTripSum.innerHTML = `Cost: ${costObj.sum}`;
-        proposedTripTotal.innerHTML = `Total + Agent's Fee: ${costObj.sumFee}`;
+        animateShowCost(costObj);
     });
 };
 
@@ -187,6 +208,7 @@ function findCost(data, newTrip) {
 
 //---        DOM
 function renderDisplay(traveler, destRepo, tripRepo) {
+    resetDisplay();
     renderTraveler(traveler, destRepo)
 };
 
@@ -202,6 +224,26 @@ function renderAnimation(){
     newTripForm.classList.remove("hidden");
     newTripForm.classList.add("appear");
 }
+
+function animateShowCost(costObj) {
+    if (proposedTripContainer.classList.contains("appear")){
+        resetNewTripAnimations();
+    }
+    newTripForm.classList.add("show-cost");
+    proposedTrip.classList.add("increase-margin");
+    flightCost.innerText = `Flight Cost: $${costObj.flight}`;
+    lodgingCost.innerText = `Lodging Cost: $${costObj.lodging}`;
+    proposedTripSum.innerText = `Cost: $${costObj.sum}`;
+    proposedTripTotal.innerText = `Total + Agent's Fee: $${costObj.sumFee}`;
+    proposedTripContainer.classList.remove("hidden");
+    proposedTripContainer.classList.add("appear");
+}
+
+function resetNewTripAnimations() {
+    proposedTripContainer.classList.add("hidden");
+    proposedTripContainer.classList.remove("appear");
+}
+
 
 function addDestinationOptions(destinationsRepo) {
     let destinations = destinationsRepo.destinations

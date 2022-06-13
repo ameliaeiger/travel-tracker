@@ -25,10 +25,21 @@
   }
 }
 
+@keyframes increaseMargin {
+  0% {
+    margin-top: 0px;
+  }
+
+  100% {
+    margin-top: 60px;
+  }
+}
+
+
 .appear {
   animation: appear;
   animation-timing-function: ease-in;
-  animation-duration: 1.5s;
+  animation-duration: 0.5s;
 }
 
 
@@ -124,26 +135,59 @@ button:hover {
 .agency-display-wrapper {
   display: flex;
   justify-content: flex-start;
+  width: 100%;
 }
 
 .agency-display {
   display: flex;
-  height: 500px;
-  width: 500px;
-  background-color: rgba(255, 255, 255, 0.9);
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  max-height: 100%;
+  width: 70%;
+  /* background-color: rgba(255, 255, 255, 0.3); */
+  border: 2px solid black;
 }
 
 .navbar {
   display: flex;
   flex-direction: column;
-  height: 100%;
 
+  width: 8%;
+  margin: 20px 100px 20px 20px;
+  background-color: rgba(255, 255, 255, 0.8);
 
-  padding: 50px;
-  background-color: rgba(255, 255, 255, 0.9);
-
+  /* border: 2px solid gray; */
+  border-radius: 20px;
 }
 
+.navbar > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  height: 100%;
+  padding: 10px 35px;
+  border: none;
+  background-color: transparent;
+}
+
+.top {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5) !important;
+}
+
+.bottom {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top: 1px solid rgba(128, 128, 128, 0.5) !important;
+}
+
+.navbar > button:hover {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.9);
+}
 
 
 
@@ -172,6 +216,17 @@ button:hover {
   margin: 50px;
   box-shadow: 2px 2px 5px;
   
+}
+
+.show-cost {
+  flex-direction: column;
+  align-items: center;
+}
+
+.increase-margin {
+  margin-top: 60px;
+  animation: increaseMargin;
+  animation-duration: 3s;
 }
 
 .new-trip-form {
