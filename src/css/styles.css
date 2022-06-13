@@ -1,3 +1,41 @@
+@keyframes slideFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(70%);
+  }
+
+  60% {
+    height: 115%;
+    width: 115%;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.appear {
+  animation: appear;
+  animation-timing-function: ease-in;
+  animation-duration: 1.5s;
+}
+
+
+.hidden {
+  display: none !important;
+}
+
 body {
   width: 100%;
   height: auto;
@@ -39,6 +77,20 @@ button:hover {
   background-color: #f1d859;
   box-shadow: 1px 1px 4px gray;
 }
+
+.welcome-user {
+  font-size: 20px;
+}
+
+/* Agency Display */
+.test {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+
 
 /* Trip Request Form */
 .trip-request-wrapper {
@@ -143,7 +195,36 @@ input::-webkit-calendar-picker-indicator {
   display: flex;
   height: 100%;
   width: 100%;
+  animation-name: slideFromRight;
+	animation-timing-function:cubic-bezier(0.445, 0.05, 0.55, 0.95);
+	visibility: visible;
+  overflow: hidden;
+  animation-direction: alternate;
 }
+
+.traveler-image:nth-child(1) {
+  animation-duration: 1s;
+}
+
+.traveler-image:nth-child(2) {
+  animation-duration: 1.2s;
+}
+
+.traveler-image:nth-child(3) {
+  animation-duration: 1.4s;
+} 
+
+.traveler-image:nth-child(4) {
+  animation-duration: 1s;
+}
+
+.traveler-image:nth-child(5) {
+  animation-duration: 1.2s;
+}
+
+.traveler-image:nth-child(6) {
+  animation-duration: 1.4s;
+} 
 
 /* Modal */
 .modal {
@@ -305,7 +386,7 @@ input::-webkit-calendar-picker-indicator {
 
 
 
-.glide__slide[class*="active"] {
+/* .glide__slide[class*="active"] {
   background: linear-gradient(-45deg, #ed145b, #7b31f4);
 }
 
@@ -327,4 +408,4 @@ input::-webkit-calendar-picker-indicator {
 
 .glide__arrow:hover {
   background-color: #ed145b;
-}
+} */

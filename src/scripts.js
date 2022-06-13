@@ -28,6 +28,7 @@ const travelerPastTrips = document.getElementById("traveler-trips-display-past")
 const destinationSelect = document.getElementById("destination-options");
 
 //---       Form
+const newTripForm = document.getElementById("new-trip-request");
 const startDate = document.getElementById("date-input-start");
 const endDate = document.getElementById("date-input-end");
 const destinationInput = document.getElementById("destination-options");
@@ -46,13 +47,17 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
+//---       Agency
+const navbar = document.getElementById("navbar-wrapper");
+const agencyView = document.getElementById("agency-wrapper");
+
 
 
 //      ------------    o _____ o    ------------ //
 
 
 // EVENT LISTENERS
-// window.addEventListener("load", toggleLogin);
+window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
@@ -88,7 +93,9 @@ function userLogin() {
         let traveler = new Traveler(currentUser.id, currentUser.name, currentUser.travelerType, allTrips, destRepo);
         renderDisplay(traveler, destRepo, tripRepo);
         MicroModal.close("modal-1");
-
+    } else if (username.value == "agency" && password.value == "travel"){
+        renderAgencyDisplay();
+        MicroModal.close("modal-1");
     } else if (username.value && password.value){
         currentUserID = Math.floor(Math.random() * 50);
         let currentUser = travelerRepo.getTraveler(currentUserID);
@@ -98,6 +105,21 @@ function userLogin() {
         MicroModal.close("modal-1");
     };
 };
+
+function renderAgencyDisplay() {
+    welcomeUser.innerHTML = `Travel Tracker: Agency Edition`;
+    newTripForm.innerHTML = "Welcome! You have 2 new pending requests.";
+
+    renderAnimation();
+    navbar.classList.remove("hidden");
+    navbar.classList.add("appear");
+    agencyView
+
+
+
+
+}
+
 
 //---       New Trip
 function submitTrip(e) {
@@ -153,10 +175,16 @@ function renderDisplay(traveler, destRepo, tripRepo) {
 
 function renderTraveler(travObj, destRepo) {
     welcomeUser.innerHTML = `Welcome, ${travObj.name}!`;
+    renderAnimation();
     let keys = travObj.pastTripKeys;
     let allPastDestinations = destRepo.getDestById(keys);
     createImageNodes(allPastDestinations);
 };
+
+function renderAnimation(){
+    newTripForm.classList.remove("hidden");
+    newTripForm.classList.add("appear");
+}
 
 function addDestinationOptions(destinationsRepo) {
     let destinations = destinationsRepo.destinations

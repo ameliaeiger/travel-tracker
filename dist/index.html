@@ -11,13 +11,22 @@
 
   <!-- Login -->
   <header class="header">
-    <div id="welcome-user"></div>
+    <div class="welcome-user" id="welcome-user"></div>
     <button class="login-button" id="request-login">Log In</button>
   </header>
 
+
+  <div class="agency-wrapper" id="agency-wrapper">
+  <!-- Agency Navbar -->
+  <div class="navbar-wrapper hidden" id="navbar-wrapper">
+    <section class="navbar">
+      HELLO
+    </section>
+  </div>
+
   <!-- Trip Request Form -->
   <div class="trip-request-wrapper">
-    <section class="new-trip-request">
+    <section class="new-trip-request hidden" id="new-trip-request">
       <form class="new-trip-form">
         <div class="form-input">
           <label for="date-input">Check-in:</label>
@@ -88,6 +97,7 @@
       </footer>
     </div>
   </div>
+</div>
 </div>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
 <script src="bundle.js"></script>
