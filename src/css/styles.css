@@ -115,18 +115,10 @@ input::-webkit-calendar-picker-indicator {
   color: white;
 }
 
-.form-buttons {
-
-}
-
 #clear {
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 200;
 }
-
-.submit {
-} 
-
 
 /*    PAST TRIPS    */
 .image-grid-container{
@@ -308,4 +300,31 @@ input::-webkit-calendar-picker-indicator {
 .micromodal-slide .modal__container,
 .micromodal-slide .modal__overlay {
   will-change: transform;
+}
+
+
+
+
+.glide__slide[class*="active"] {
+  background: linear-gradient(-45deg, #ed145b, #7b31f4);
+}
+
+.glide__arrows {
+  padding: 5px;
+}
+
+.glide__arrow {
+  position: relative;
+  top: 0;
+  margin: 0;
+  transform: none;
+  left: 0;
+  right: 0;
+  padding: 5px;
+  background-color: #818999;
+  transition: all 0.2s ease-in-out;
+}
+
+.glide__arrow:hover {
+  background-color: #ed145b;
 }

@@ -4,6 +4,7 @@
 // LIBRARIES
 const dayjs = require('dayjs');
 import MicroModal from 'micromodal'; 
+import Glide, { Controls, Breakpoints } from '@glidejs/glide/dist/glide.modular.esm';
 
 
 // IMPORTS
@@ -14,7 +15,7 @@ import TravelerRepo from './TravelerRepo';
 import Traveler from './Traveler';
 import TripRepo from './TripRepo.js';
 import './css/styles.css';
-import './images/turing-logo.png'
+import './images/turing-logo.png';
 
 
 // GLOBALS
@@ -210,6 +211,62 @@ function displayDestinationImages(classString, imageHTML) {
 };
 
 
-    
 
 
+
+
+
+//---       GLIDE
+
+// let controls = document.getElementById("left");
+
+// var controlsLeft = document.getElementById("left");
+// var controlsRight = document.getElementById("right");
+// var first = document.getElementById("first");
+
+// var glide = new Glide('.glide', {
+//   type: "carousel",
+//   focusAt: 'center',
+//   startAt: first,
+//   perView: 1
+// })
+
+// controlsLeft.addEventListener('click', function (event) {
+//   glide.update({
+//     type: event.target.value
+//   })
+// })
+
+// controlsRight.addEventListener('click', function (event) {
+//     glide.update({
+//       type: event.target.value
+//     })
+//   })
+
+// glide.mount()
+
+// var input = document.querySelector('.control');
+// var first = document.querySelector('.first');
+// var slides = document.querySelectorAll(".glide__slide")
+
+
+// var glide = new Glide('.glide', {
+//     type: "carousel"
+// })
+
+// input.addEventListener('click', function (event) {
+//     console.log("triggered")
+//     console.log(event.target.value)
+
+//     if (event.target.value == "left"){
+//         glide.index--
+//     } else {
+//         glide.index++
+//         console.log(slides[glide.index])
+
+//     }
+//     console.log(glide.index)
+
+// })
+
+// glide.mount({Controls, Breakpoints})
