@@ -1,12 +1,13 @@
 body {
   width: 100%;
   height: auto;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   /* background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%); */
   /* Kayak */
   /* background-image: url(https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80); */
   /* Map */
   /* background-image: url(https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80); */
-  background-image: url(https://images.unsplash.com/photo-1500835556837-99ac94a94552?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80);
+  /* background-image: url(https://images.unsplash.com/photo-1500835556837-99ac94a94552?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80); */
   
   background-repeat: no-repeat;
   background-size: cover;
@@ -16,29 +17,74 @@ body {
   justify-content: center;
 }
 
+button {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
-
-  background-color: dodgerblue;
   padding: 25px;
 }
 
+.login-button {
+  font-size: 17px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  background-color: #f1d859;
+  box-shadow: 1px 1px 4px gray;
+}
+
 /* Trip Request Form */
+.trip-request-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  min-height: 500px;
+  background-image: url(https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1635&q=80);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+}
 .new-trip-request {
   display: flex;
   justify-content: space-between;
   max-width: 900px;
   height: auto;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 50px;
   border-radius: 25px;
   margin: 50px;
+  box-shadow: 2px 2px 5px;
+  
 }
 
 .new-trip-form {
   display: grid;
   grid-template-columns: 300px 300px;
+  grid-template-rows: 40px 40px 30px;
+  row-gap: 15px;
+  column-gap: 20px;
+}
+
+.user-input {
+  font-size: 15px;
+}
+
+.user-input:hover {
+  cursor: pointer;
+}
+
+input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 
 .form-text {
@@ -47,9 +93,6 @@ body {
 
 .form-input {
   display: flex;
-}
-
-.date {
   flex-direction: column;
 }
 
@@ -57,10 +100,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 50%;
   border: none;
-  border-radius: 25px;
-  padding: 5px;
+  border-radius: 10px;
+  font-weight: 200;
+  font-size: 17px;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
 }
 
 .new-trip-button:hover {
@@ -69,23 +115,36 @@ body {
   color: white;
 }
 
+.form-buttons {
+
+}
+
+#clear {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 200;
+}
+
+.submit {
+} 
 
 
+/*    PAST TRIPS    */
+.image-grid-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
 
 .traveler-trips-grid.past {
   display: grid;
-  grid-template-columns: 300px 300px 300px 300px;
+  grid-template-columns: 300px 300px 300px;
   grid-template-rows: 300px;
   grid-auto-rows: 300px;
   grid-auto-columns: 300px;
   row-gap: 10px;
   column-gap: 50px;
-}
-
-.image-grid-containter{
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .traveler-image {

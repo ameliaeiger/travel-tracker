@@ -46,11 +46,19 @@ const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
 
+
+//      ------------    o _____ o    ------------ //
+
+
 // EVENT LISTENERS
-window.addEventListener("load", toggleLogin);
+// window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
+
+
+//      ------------    o _____ o    ------------ //
+
 
 
 // FUNCTIONS

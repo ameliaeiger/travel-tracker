@@ -12,31 +12,36 @@
   <!-- Login -->
   <header class="header">
     <div id="welcome-user"></div>
-    <button id="request-login">Log In</button>
+    <button class="login-button" id="request-login">Log In</button>
   </header>
 
   <!-- Trip Request Form -->
-  <section class="new-trip-request">
-    <div class="form-text">Where to?</div>
-    <form class="new-trip-form">
-      <div class="form-input date">
-        <label for="date-input">Check-in:</label>
-        <input class="user-input date-input" type="date" id="date-input-start" name="date">
-      </div>
-      <div class="form-input date">
-        <label for="date-input">Check-out:</label>
-        <input class="user-input date-input" type="date" id="date-input-end" name="date">
-      </div>
-      <div class="form-input">
-        <label for="numTravelers">Travelers:</label>
-        <input type="number" id="num-travelers" name="num-travelers">
-      </div>
-      <select id="destination-options" name="destinations">
-      </select>
-      <input type="reset" class="new-trip-button" value="Clear">
-      <button class="submit new-trip-button" id="submit">Submit</button>
-    </form>
-  </section>
+  <div class="trip-request-wrapper">
+    <section class="new-trip-request">
+      <form class="new-trip-form">
+        <div class="form-input">
+          <label for="date-input">Check-in:</label>
+          <input class="user-input date-input" type="date" id="date-input-start" name="date">
+        </div>
+        <div class="form-input">
+          <label for="date-input">Check-out:</label>
+          <input class="user-input date-input" type="date" id="date-input-end" name="date">
+        </div>
+        <div class="form-input">
+          <label for="numTravelers">Travelers:</label>
+          <input class="user-input" type="number" id="num-travelers" name="num-travelers" value="2">
+        </div>
+        <div class="form-input">
+          <label for="destination-options">Destination:</label>
+          <select class="user-input" id="destination-options" name="destinations"></select>
+        </div>
+        <!-- <div class="form-buttons"> -->
+          <input type="reset" class="clear new-trip-button" id="clear" value="Clear">
+          <button class="submit new-trip-button" id="submit">Submit</button>
+        <!-- </div> -->
+      </form>
+    </section>
+  </div>
 
 <!-- Proposed Trip -->
 <section class="proposed-trip">
@@ -53,7 +58,6 @@
     <div class="image-grid-container">
       <p class="traveler-trips-grid past" id="traveler-trips-display-past"></p>
     </div>
-  <p></p>
   
 <!-- Modal -->
 <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
