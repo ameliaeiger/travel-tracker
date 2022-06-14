@@ -14,6 +14,7 @@ import Destination from './Destination';
 import TravelerRepo from './TravelerRepo';
 import Traveler from './Traveler';
 import TripRepo from './TripRepo.js';
+import Trip from './Trip.js';
 import './css/styles.css';
 import './images/turing-logo.png';
 
@@ -21,10 +22,13 @@ import './images/turing-logo.png';
 // GLOBALS
 let currentUserID;
 let travelerRepo;
+let traveler;
 let tripRepo;
 let destRepo;
 
 const travelerPastTrips = document.getElementById("traveler-trips-display-past");
+const travelerFutureTrips = document.getElementById("traveler-trips-display-upcoming");
+const travelerPendingTrips = document.getElementById("traveler-trips-display-pending");
 const destinationSelect = document.getElementById("destination-options");
 
 //---       Form
@@ -50,20 +54,11 @@ const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
 
-
-
-
-//      ------------    o _____ o    ------------ //
-
-
 // EVENT LISTENERS
-// window.addEventListener("load", toggleLogin);
+window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
-
-
-//      ------------    o _____ o    ------------ //
 
 
 // FUNCTIONS
@@ -80,121 +75,74 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
 //---       MicroModal
 function toggleLogin() {
     MicroModal.show("modal-1");
-    // MicroModal.close("modal-1")
 }
 
 //---        Login
 function userLogin() {
-    resetDisplay();
+    // resetDisplay();
     if (username.value == "traveler50" && password.value == "travel"){
-        currentUserID = 50;
-        let currentUser = travelerRepo.getTraveler(currentUserID);
-        let allTrips = tripRepo.returnAllUserTrips(currentUser.id);
-        let traveler = new Traveler(currentUser.id, currentUser.name, currentUser.travelerType, allTrips, destRepo);
+        let currentTraveler = travelerRepo.getTraveler(50);
+        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips);
+        currentUserID = currentTraveler.id;
         renderDisplay(traveler, destRepo, tripRepo);
         MicroModal.close("modal-1");
     } else if (username.value == "agency" && password.value == "travel"){
         renderAgencyDisplay();
         MicroModal.close("modal-1");
     } else if (username.value && password.value){
-        currentUserID = Math.floor(Math.random() * 50);
-        let currentUser = travelerRepo.getTraveler(currentUserID);
-        let allTrips = tripRepo.returnAllUserTrips(currentUser.id);
-        let traveler = new Traveler(currentUser.id, currentUser.name, currentUser.travelerType, allTrips, destRepo);
+        let currentTraveler = travelerRepo.getTraveler(Math.floor(Math.random() * 50));
+        currentUserID = currentTraveler.id;
+        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips);
+        currentUserID = currentTraveler.id;
         renderDisplay(traveler, destRepo, tripRepo);
-        MicroModal.close("modal-1");
+        MicroModal.close("modal-1");        
     };
 };
 
-
-//---       Agency
-const agencyDashboard = document.getElementById("agency-dashboard");
-const agencyTripRequests = document.getElementById("trip-request-agency");
-const welcomeMessage = document.getElementById("greeting-text");
-const dismissButton = document.getElementById("x-button");
-const navbar = document.getElementById("navbar");
-const agencyDisplayWrapper = document.getElementById("agency-display-wrapper");
-const agencyDisplay = document.getElementById("agency-display");
-
-
-renderAgencyDisplay()
-// Agency Event Listeners
-dismissButton.addEventListener("click", dismissAgencyGreeting);
-navbar.addEventListener("click", function(event) {
-    console.log(event.target.value)
-    agencyDisplay.innerText = event.target.value
-});
-
-//---       Agency DOM Functions
-
-function toggleAgencyView() {
-
-}
-
-function renderAgencyDisplay() {
-    welcomeUser.innerHTML = `Travel Tracker: Agency Edition`;
-    welcomeMessage.innerText += "Welcome! You have 2 new pending requests.";
-
-    agencyDashboard.classList.remove("hidden");
-    agencyDashboard.classList.add("appear");
-}
-
-function dismissAgencyGreeting() {
-    agencyTripRequests.classList.add("hidden");
-
-    agencyDisplayWrapper.classList.remove("hidden");
-    agencyDisplayWrapper.classList.add("appear");
-
-}
-
-
-
-function resetDisplay() {
-    welcomeUser.innerHTML = "";
-    travelerPastTrips.innerHTML = "";
-    welcomeMessage.innerHTML = "";
-    newTripForm.className = "new-trip-request hidden";
-    agencyDisplayWrapper.className = "agency-display-wrapper hidden";
-    agencyDashboard.className = "agency-dashboard hidden";
-    proposedTripContainer.className = "proposed-trip-cost hidden";
-
-
-}
-
+// function resetDisplay() {
+//     welcomeUser.innerHTML = "";
+//     travelerPastTrips.innerHTML = "";
+//     welcomeMessage.innerHTML = "";
+//     newTripForm.className = "new-trip-request hidden";
+//     agencyDisplayWrapper.className = "agency-display-wrapper hidden";
+//     agencyDashboard.className = "agency-dashboard hidden";
+//     proposedTripContainer.className = "proposed-trip-cost hidden";
+// }
 
 
 //---       New Trip
 function submitTrip(e) {
     e.preventDefault()
-    //  Date
     let start = dayjs(startDate.value);
     let end = dayjs(endDate.value);
+    let date = dayjs(start).format("YYYY/MM/DD");
     let duration = end.diff(start, "day");
-
-    // Destination
-    let dest = destinationInput.value;
-
-    // Number of travelers
     let num = numTravelers.value;
-
-    // Trip Object
-    let newTrip = {
+    let destName = destinationInput.value;
+    let destID = destRepo.getDestByName(destName);
+    let destObj = destRepo.destinations[destID];
+    let newTripData = {
+        "id": tripRepo.trips.length + 1,
+        "userID": currentUserID,
+        "destinationID": destID,
+        "travelers": num,
+        "date": date,
         "duration": duration,
-        "destination": dest,
-        "travelers": num
+        "status": "pending",
+        "suggestedActivities": [],
+        "tripCost": 0,
+        "category": "",
     }
-    allDestinationsData.then(data => {
-        data.destinations;
-        let costObj = findCost(data.destinations, newTrip);
-        animateShowCost(costObj);
-    });
+    let newTrip = new Trip(newTripData)
+    newTrip.getTripCost(destObj);
+
+    let costObject = showTripCost(destObj, newTrip)
+    animateShowCost(costObject)
 };
 
-function findCost(data, newTrip) {
-    console.log(data, newTrip);
-    let match = data.filter(destination => destination.destination == newTrip.destination);
-    let flightCost = match[0].estimatedFlightCostPerPerson * newTrip.travelers;
-    let lodgingCost = match[0].estimatedLodgingCostPerDay * newTrip.duration;
+function showTripCost(destObj, newTrip) {
+    let flightCost = destObj.estimatedFlightCostPerPerson * newTrip.travelers;
+    let lodgingCost = destObj.estimatedLodgingCostPerDay * newTrip.duration;
     let sum = flightCost + lodgingCost;
     let sumFee =  (flightCost + lodgingCost) * 1.1;
     let object = {
@@ -206,29 +154,46 @@ function findCost(data, newTrip) {
     return object;
 };
 
+
 //---        DOM
 function renderDisplay(traveler, destRepo, tripRepo) {
-    resetDisplay();
+    // resetDisplay();
     renderTraveler(traveler, destRepo)
 };
 
-function renderTraveler(travObj, destRepo) {
-    welcomeUser.innerHTML = `Welcome, ${travObj.name}!`;
+function renderTraveler() {
+    welcomeUser.innerHTML = `Welcome, ${traveler.name}!`;
     renderAnimation();
-    let keys = travObj.pastTripKeys;
-    let allPastDestinations = destRepo.getDestById(keys);
-    createImageNodes(allPastDestinations);
+    let allTrips = tripRepo.returnAllUserTrips(traveler.id);
+    let pastTrips = [];
+    let futureTrips = [];
+    let pendingTrips = [];
+    console.log(allTrips)
+    allTrips.forEach(trip => {
+        let trippy = new Trip (trip)
+        if (trippy.getTripCategory() == "past"){
+            pastTrips.push(trip.destinationID);
+        } else if (trippy.getTripCategory() == "upcoming"){
+            futureTrips.push(trip.destinationID);
+        } else {
+            pendingTrips.push(trip.destinationID);
+        }
+    });
+    let allPastDestinations = destRepo.getDestById(pastTrips);
+    let allFutureDestinations = destRepo.getDestById(futureTrips);
+    createImageNodes(allPastDestinations, "past");
+    createImageNodes(allFutureDestinations, "future");
 };
 
 function renderAnimation(){
     newTripForm.classList.remove("hidden");
     newTripForm.classList.add("appear");
-}
+};
 
 function animateShowCost(costObj) {
     if (proposedTripContainer.classList.contains("appear")){
         resetNewTripAnimations();
-    }
+    };
     newTripForm.classList.add("show-cost");
     proposedTrip.classList.add("increase-margin");
     flightCost.innerText = `Flight Cost: $${costObj.flight}`;
@@ -237,13 +202,12 @@ function animateShowCost(costObj) {
     proposedTripTotal.innerText = `Total + Agent's Fee: $${costObj.sumFee}`;
     proposedTripContainer.classList.remove("hidden");
     proposedTripContainer.classList.add("appear");
-}
+};
 
 function resetNewTripAnimations() {
     proposedTripContainer.classList.add("hidden");
     proposedTripContainer.classList.remove("appear");
-}
-
+};
 
 function addDestinationOptions(destinationsRepo) {
     let destinations = destinationsRepo.destinations
@@ -262,7 +226,7 @@ function addDestinationOptions(destinationsRepo) {
             return -1
         }
     });
-    sortedList.forEach(destination => {
+    sortedList.forEach((destination, index) => {
         let node = document.createElement("option")
         node.value = destination
         node.innerText = destination
@@ -270,90 +234,65 @@ function addDestinationOptions(destinationsRepo) {
     });
 };
 
-function createImageNodes(pastTrips) {
-    console.log(pastTrips)
-    pastTrips.forEach(function(destination, index){
-        // Create element for each image
+function createImageNodes(trips, when) {
+    trips.forEach(function(destination, index){
         let imageNode = document.createElement("img");
-        let classString = `img${index}`
-        imageNode.classList.add(classString)
+        let classString = `img${index}`;
+        imageNode.classList.add(classString);
         imageNode.classList.add("traveler-image");
         imageNode.src = destination.image;
         imageNode.alt = destination.alt;
-        console.log(imageNode)
-        travelerPastTrips.appendChild(imageNode);
-
+        if (when === "past") {
+            travelerPastTrips.appendChild(imageNode);
+        };
+        if (when === "future") {
+            travelerFutureTrips.appendChild(imageNode);
+        };
+        if (when === "pending") {
+            travelerPendingTrips.appendChild(imageNode);
+        };
         // Create element for text -- save for later use
         // let text = `Destination: ${destination.destination} Image: ${destination.image} Alt: ${destination.alt}`
         // let newText = document.createTextNode(text);
-
         // Append -- save for later use
         // travelerTrips.appendChild(newText);
     });
 };
 
-function displayDestinationImages(classString, imageHTML) {
-    let node = document.querySelector(classString);
-    node.innerHTML = imageHTML;
-};
 
 
 
+//---       Agency
+// const agencyDashboard = document.getElementById("agency-dashboard");
+// const agencyTripRequests = document.getElementById("trip-request-agency");
+// const welcomeMessage = document.getElementById("greeting-text");
+// const dismissButton = document.getElementById("x-button");
+// const navbar = document.getElementById("navbar");
+// const agencyDisplayWrapper = document.getElementById("agency-display-wrapper");
+// const agencyDisplay = document.getElementById("agency-display");
 
 
-
-
-//---       GLIDE
-
-// let controls = document.getElementById("left");
-
-// var controlsLeft = document.getElementById("left");
-// var controlsRight = document.getElementById("right");
-// var first = document.getElementById("first");
-
-// var glide = new Glide('.glide', {
-//   type: "carousel",
-//   focusAt: 'center',
-//   startAt: first,
-//   perView: 1
-// })
-
-// controlsLeft.addEventListener('click', function (event) {
-//   glide.update({
-//     type: event.target.value
-//   })
-// })
-
-// controlsRight.addEventListener('click', function (event) {
-//     glide.update({
-//       type: event.target.value
-//     })
-//   })
-
-// glide.mount()
-
-// var input = document.querySelector('.control');
-// var first = document.querySelector('.first');
-// var slides = document.querySelectorAll(".glide__slide")
-
-
-// var glide = new Glide('.glide', {
-//     type: "carousel"
-// })
-
-// input.addEventListener('click', function (event) {
-//     console.log("triggered")
+//      Agency Event Listeners
+// dismissButton.addEventListener("click", dismissAgencyGreeting);
+// navbar.addEventListener("click", function(event) {
 //     console.log(event.target.value)
+//     agencyDisplay.innerText = event.target.value
+// });
 
-//     if (event.target.value == "left"){
-//         glide.index--
-//     } else {
-//         glide.index++
-//         console.log(slides[glide.index])
 
-//     }
-//     console.log(glide.index)
+//---       Agency DOM Functions
+// function renderAgencyDisplay() {
+//     welcomeUser.innerHTML = `Travel Tracker: Agency Edition`;
+//     welcomeMessage.innerText += "Welcome! You have 2 new pending requests.";
 
-// })
+//     agencyDashboard.classList.remove("hidden");
+//     agencyDashboard.classList.add("appear");
+// }
 
-// glide.mount({Controls, Breakpoints})
+// function dismissAgencyGreeting() {
+//     agencyTripRequests.classList.add("hidden");
+
+//     agencyDisplayWrapper.classList.remove("hidden");
+//     agencyDisplayWrapper.classList.add("appear");
+
+// }

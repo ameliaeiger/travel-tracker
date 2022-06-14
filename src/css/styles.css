@@ -282,6 +282,12 @@ input::-webkit-calendar-picker-indicator {
   font-weight: 200;
 }
 
+/*    ALL USER TRIPS    */
+.all-user-trips {
+  display: flex;
+  flex-direction: column;
+}
+
 /*    PAST TRIPS    */
 .image-grid-container{
   display: flex;
@@ -289,13 +295,15 @@ input::-webkit-calendar-picker-indicator {
   align-items: center;
   width: 100%;
   height: auto;
+  margin-top: 15px;
 }
 
-.traveler-trips-grid.past {
+.traveler-trips-grid.past,
+.traveler-trips-grid.upcoming {
   display: grid;
   grid-template-columns: 300px 300px 300px;
   grid-template-rows: 300px;
-  grid-auto-rows: 300px;
+  /* grid-auto-rows: 300px; */
   grid-auto-columns: 300px;
   row-gap: 10px;
   column-gap: 50px;
