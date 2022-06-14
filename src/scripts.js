@@ -49,14 +49,14 @@ const flightCost = document.getElementById("flight-cost");
 
 //---       Login
 const requestLogin = document.getElementById("request-login");
-const login = document.getElementById("login-button");
+const login = document.getElementById("confirm-login-button");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
 
 // EVENT LISTENERS
-// window.addEventListener("load", toggleLogin);
+window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
@@ -86,7 +86,7 @@ function toggleLogin() {
 
 //---        Login
 function userLogin() {
-    // resetDisplay();
+    resetDisplay();
     if (username.value == "traveler50" && password.value == "travel"){
         let currentTraveler = travelerRepo.getTraveler(50);
         traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips);
@@ -103,24 +103,27 @@ function userLogin() {
         currentUserID = currentTraveler.id;
         renderDisplay(traveler, destRepo, tripRepo);
         MicroModal.close("modal-1");        
-    } else {
-        let currentTraveler = travelerRepo.getTraveler(1);
-        currentUserID = currentTraveler.id;
-        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips);
-        currentUserID = currentTraveler.id;
-        renderDisplay(traveler, destRepo, tripRepo);
-    };
+    } 
+    // else {
+    //     let currentTraveler = travelerRepo.getTraveler(1);
+    //     currentUserID = currentTraveler.id;
+    //     traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips);
+    //     currentUserID = currentTraveler.id;
+    //     renderDisplay(traveler, destRepo, tripRepo);
+    // };
 };
 
-// function resetDisplay() {
-//     welcomeUser.innerHTML = "";
-//     travelerPastTrips.innerHTML = "";
-//     welcomeMessage.innerHTML = "";
-//     newTripForm.className = "new-trip-request hidden";
-//     agencyDisplayWrapper.className = "agency-display-wrapper hidden";
-//     agencyDashboard.className = "agency-dashboard hidden";
-//     proposedTripContainer.className = "proposed-trip-cost hidden";
-// }
+function resetDisplay() {
+    welcomeUser.innerHTML = "";
+    travelerPastTrips.innerHTML = "";
+    travelerFutureTrips.innerHTML = "";
+    travelerPendingTrips.innerHTML = "";
+    welcomeMessage.innerHTML = "";
+    newTripForm.className = "new-trip-request hidden";
+    agencyDisplayWrapper.className = "agency-display-wrapper hidden";
+    agencyDashboard.className = "agency-dashboard hidden";
+    proposedTripContainer.className = "proposed-trip-cost hidden";
+}
 
 
 //---       New Trip
@@ -291,13 +294,13 @@ function createImageNodes(trips, when) {
 
 
 //---       Agency
-// const agencyDashboard = document.getElementById("agency-dashboard");
-// const agencyTripRequests = document.getElementById("trip-request-agency");
-// const welcomeMessage = document.getElementById("greeting-text");
-// const dismissButton = document.getElementById("x-button");
-// const navbar = document.getElementById("navbar");
-// const agencyDisplayWrapper = document.getElementById("agency-display-wrapper");
-// const agencyDisplay = document.getElementById("agency-display");
+const agencyDashboard = document.getElementById("agency-dashboard");
+const agencyTripRequests = document.getElementById("trip-request-agency");
+const welcomeMessage = document.getElementById("greeting-text");
+const dismissButton = document.getElementById("x-button");
+const navbar = document.getElementById("navbar");
+const agencyDisplayWrapper = document.getElementById("agency-display-wrapper");
+const agencyDisplay = document.getElementById("agency-display");
 
 
 //      Agency Event Listeners
