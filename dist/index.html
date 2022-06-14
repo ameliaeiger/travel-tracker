@@ -4,51 +4,49 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webpack Starter Kit</title>
+  <title>Travel Tracker</title>
 </head>
 <body>
   <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
 
   <!-- Login -->
   <header class="header">
-    <div class="welcome-user" id="welcome-user"></div>
-    <button class="login-button" id="request-login">Log In</button>
+    <h2 class="welcome-user" id="welcome-user" tabindex="0"></h2>
+    <button class="login-button" id="request-login" tabindex="0">Log In</button>
   </header>
 
 
   <!-- Trip Request Form -->
   <div class="trip-request-wrapper">
     <section class="new-trip-request hidden" id="new-trip-request">
-      <form class="new-trip-form">
-        <div class="form-input">
-          <label for="date-input">Check-in:</label>
-          <input class="user-input date-input" type="date" id="date-input-start" name="date">
-        </div>
-        <div class="form-input">
-          <label for="date-input">Check-out:</label>
-          <input class="user-input date-input" type="date" id="date-input-end" name="date">
-        </div>
-        <div class="form-input">
-          <label for="numTravelers">Travelers:</label>
-          <input class="user-input" type="number" id="num-travelers" name="num-travelers" value="2">
-        </div>
-        <div class="form-input">
-          <label for="destination-options">Destination:</label>
-          <select class="user-input" id="destination-options" name="destinations"></select>
-        </div>
-        <!-- <div class="form-buttons"> -->
-          <input type="reset" class="clear new-trip-button" id="clear" value="Clear">
-          <button class="submit new-trip-button" id="submit">Show</button>
-        <!-- </div> -->
+      <form class="request-new-trip" tabindex="0">
+          <h3 class="form-input" tabindex="0">
+            <label for="label-check-in" tabindex="0">Check-in:</label>
+            <input class="user-input date-input" name="check-in-date" type="date" id="date-input-start" name="date" aria-label="input-check-in-date" aria-required="true">
+          </h3>
+          <h3 class="form-input">
+            <label for="label-check-out" tabindex="0">Check-out:</label>
+            <input class="user-input date-input" name="check-out-date" type="date" id="date-input-end" name="date" aria-required="true">
+          </h3>
+          <h3 class="form-input">
+            <label class="label" for="numTravelers" name="number-of-travelers" tabindex="0">Travelers:</label>
+            <input class="number-of-travelers user-input" type="number" id="num-travelers" name="num-travelers" value="2" aria-label="input-number-of-travelers" aria-required="true">
+          </h3>
+          <h3 class="form-input">
+            <label for="destination-options" name="destination-options" tabindex="0">Destination:</label>
+            <select class="user-input" id="destination-options" name="destinations" aria-required="true"></select>
+          </h3>
+          <input type="reset" class="new-trip-button" id="clear" value="Clear" aria-label="reset-form-button">
+          <button class="submit new-trip-button" id="submit" aria-label="show-cost">Show</button>
       </form>
 
       <section class="proposed-trip" id="proposed-trip">
         <div class="proposed-trip-cost hidden" id="proposed-trip-container">
-          <div id="flight-cost"></div>
-          <div id="lodging-cost"></div>
-          <div id="trip-sum"></div>
-          <div id="total-cost"></div>
-          <button id="confirm-booking">Confirm Booking</button>
+          <div id="flight-cost" tabindex="0"></div>
+          <div id="lodging-cost" tabindex="0"></div>
+          <div id="trip-sum" tabindex="0"></div>
+          <div id="total-cost" tabindex="0"></div>
+          <button class="confirm-booking" id="confirm-booking" tabindex="0">Confirm Booking</button>
         </div>
       </section>
     </section>
