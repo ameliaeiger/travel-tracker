@@ -298,8 +298,7 @@ input::-webkit-calendar-picker-indicator {
   margin-top: 15px;
 }
 
-.traveler-trips-grid.past,
-.traveler-trips-grid.upcoming {
+.traveler-trips-grid {
   display: grid;
   grid-template-columns: 300px 300px 300px;
   grid-template-rows: 300px;

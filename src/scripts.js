@@ -8,7 +8,7 @@ import Glide, { Controls, Breakpoints } from '@glidejs/glide/dist/glide.modular.
 
 
 // IMPORTS
-import { allTravelersData, allTripsData, allDestinationsData } from './apiCalls';
+import { allTravelersData, allTripsData, allDestinationsData, postData } from './apiCalls';
 import DestinationRepo from './DestinationRepo';
 import Destination from './Destination';
 import TravelerRepo from './TravelerRepo';
@@ -38,6 +38,7 @@ const endDate = document.getElementById("date-input-end");
 const destinationInput = document.getElementById("destination-options");
 const numTravelers = document.getElementById("num-travelers");
 const submit = document.getElementById("submit");
+const confirmBooking = document.getElementById("confirm-booking");
 //---       Proposed Trip
 const proposedTripContainer = document.getElementById("proposed-trip-container");
 const proposedTrip = document.getElementById("proposed-trip");
@@ -55,21 +56,27 @@ const welcomeUser = document.getElementById("welcome-user");
 
 
 // EVENT LISTENERS
-window.addEventListener("load", toggleLogin);
+// window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
+confirmBooking.addEventListener("click", postTrip);
+
+
+
 
 
 // FUNCTIONS
 //---       Promise All
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
     .then(data => {
-
         travelerRepo = new TravelerRepo(data[0].travelers);
         tripRepo = new TripRepo(data[1].trips);
         destRepo = new DestinationRepo(data[2].destinations);
         addDestinationOptions(destRepo);
+
+        userLogin()
+
     });
 
 //---       MicroModal
@@ -96,6 +103,12 @@ function userLogin() {
         currentUserID = currentTraveler.id;
         renderDisplay(traveler, destRepo, tripRepo);
         MicroModal.close("modal-1");        
+    } else {
+        let currentTraveler = travelerRepo.getTraveler(1);
+        currentUserID = currentTraveler.id;
+        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips);
+        currentUserID = currentTraveler.id;
+        renderDisplay(traveler, destRepo, tripRepo);
     };
 };
 
@@ -112,7 +125,9 @@ function userLogin() {
 
 //---       New Trip
 function submitTrip(e) {
+    if (e){
     e.preventDefault()
+    }
     let start = dayjs(startDate.value);
     let end = dayjs(endDate.value);
     let date = dayjs(start).format("YYYY/MM/DD");
@@ -135,10 +150,21 @@ function submitTrip(e) {
     }
     let newTrip = new Trip(newTripData)
     newTrip.getTripCost(destObj);
-
+    newTrip.getTripCategory(destObj);
     let costObject = showTripCost(destObj, newTrip)
     animateShowCost(costObject)
+    return newTrip
 };
+
+function postTrip() {
+   let postObj = submitTrip();
+   console.log("Post Object: ", postObj)
+   postData(postObj)
+   renderDisplay(traveler, destRepo, tripRepo);
+
+
+    
+}
 
 function showTripCost(destObj, newTrip) {
     let flightCost = destObj.estimatedFlightCostPerPerson * newTrip.travelers;
@@ -168,7 +194,7 @@ function renderTraveler() {
     let pastTrips = [];
     let futureTrips = [];
     let pendingTrips = [];
-    console.log(allTrips)
+    console.log("All Trips: ", allTrips)
     allTrips.forEach(trip => {
         let trippy = new Trip (trip)
         if (trippy.getTripCategory() == "past"){
@@ -181,8 +207,10 @@ function renderTraveler() {
     });
     let allPastDestinations = destRepo.getDestById(pastTrips);
     let allFutureDestinations = destRepo.getDestById(futureTrips);
+    let allPendingDestinations = destRepo.getDestById(pendingTrips)
     createImageNodes(allPastDestinations, "past");
     createImageNodes(allFutureDestinations, "future");
+    createImageNodes(allPendingDestinations, "pending");
 };
 
 function renderAnimation(){
