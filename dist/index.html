@@ -22,22 +22,23 @@
       <form class="request-new-trip" tabindex="0">
           <h3 class="form-input" tabindex="0">
             <label for="label-check-in" tabindex="0">Check-in:</label>
-            <input class="user-input date-input" name="check-in-date" type="date" id="date-input-start" name="date" aria-label="input-check-in-date" aria-required="true">
+            <input class="user-input date-input" name="check-in-date" type="date" id="date-input-start" name="date" aria-label="input-check-in-date" aria-required="true" required/>
           </h3>
           <h3 class="form-input">
             <label for="label-check-out" tabindex="0">Check-out:</label>
-            <input class="user-input date-input" name="check-out-date" type="date" id="date-input-end" name="date" aria-required="true">
+            <input class="user-input date-input" name="check-out-date" type="date" id="date-input-end" name="date" aria-required="true" required/>
           </h3>
           <h3 class="form-input">
             <label class="label" for="numTravelers" name="number-of-travelers" tabindex="0">Travelers:</label>
-            <input class="number-of-travelers user-input" type="number" id="num-travelers" name="num-travelers" value="2" aria-label="input-number-of-travelers" aria-required="true">
+            <input class="number-of-travelers user-input" type="number" id="num-travelers" name="num-travelers" value="2" aria-label="input-number-of-travelers" aria-required="true" required/>
           </h3>
           <h3 class="form-input">
             <label for="destination-options" name="destination-options" tabindex="0">Destination:</label>
-            <select class="user-input" id="destination-options" name="destinations" aria-required="true"></select>
+            <select class="user-input" id="destination-options" name="destinations" aria-required="true" required/></select>
           </h3>
           <input type="reset" class="new-trip-button" id="clear" value="Clear" aria-label="reset-form-button">
-          <button class="submit new-trip-button" id="submit" aria-label="show-cost">Show</button>
+          <!-- <input type="submit" class="submit new-trip-button" id="submit" aria-label="show-cost">Show</button> -->
+          <button class="submit new-trip-button" id="submit" disabled="true" aria-label="show-cost">Show</button>
       </form>
 
       <section class="proposed-trip" id="proposed-trip">

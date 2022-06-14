@@ -56,11 +56,12 @@ const welcomeUser = document.getElementById("welcome-user");
 
 
 // EVENT LISTENERS
-window.addEventListener("load", toggleLogin);
+// window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
 confirmBooking.addEventListener("click", postTrip);
+newTripForm.addEventListener("input", validateForm);
 
 
 
@@ -104,13 +105,13 @@ function userLogin() {
         renderDisplay(traveler, destRepo, tripRepo);
         MicroModal.close("modal-1");        
     } 
-    // else {
-    //     let currentTraveler = travelerRepo.getTraveler(1);
-    //     currentUserID = currentTraveler.id;
-    //     traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips);
-    //     currentUserID = currentTraveler.id;
-    //     renderDisplay(traveler, destRepo, tripRepo);
-    // };
+    else {
+        let currentTraveler = travelerRepo.getTraveler(1);
+        currentUserID = currentTraveler.id;
+        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips);
+        currentUserID = currentTraveler.id;
+        renderDisplay(traveler, destRepo, tripRepo);
+    };
 };
 
 function resetDisplay() {
@@ -159,15 +160,20 @@ function submitTrip(e) {
     return newTrip
 };
 
+function validateForm() {
+    if(startDate.value && endDate.value) {
+      submit.disabled = false;
+    };
+  };
+
 function postTrip() {
    let postObj = submitTrip();
-   console.log("Post Object: ", postObj)
    postData(postObj)
    renderDisplay(traveler, destRepo, tripRepo);
 
 
-    
-}
+
+};
 
 function showTripCost(destObj, newTrip) {
     let flightCost = destObj.estimatedFlightCostPerPerson * newTrip.travelers;
