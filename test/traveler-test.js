@@ -70,4 +70,12 @@ beforeEach( () => {
         expect(traveler.name).to.equal("Beth");
     });
 
+    it('should have a traveler type', function () {
+        expect(traveler.type).to.equal("thrill-seeker");
+    });
+
+    it('should hold all traveler trips', function () {
+        expect(traveler.trips).to.equal(travelerTrips);
+    });
+
 });
