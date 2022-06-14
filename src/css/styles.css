@@ -237,7 +237,7 @@ h3 {
   animation-duration: 3s;
 }
 
-.new-trip-form {
+.request-new-trip {
   display: grid;
   grid-template-columns: 300px 300px;
   grid-template-rows: 40px 40px 30px;
