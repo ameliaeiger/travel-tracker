@@ -11,7 +11,7 @@
 
   <!-- Login -->
   <header class="header">
-    <div class="welcome-user" id="welcome-user"></div>
+    <h2 class="welcome-user" id="welcome-user" tabindex="0"></h2>
     <button class="login-button" id="request-login">Log In</button>
   </header>
 
@@ -20,26 +20,24 @@
   <div class="trip-request-wrapper">
     <section class="new-trip-request hidden" id="new-trip-request">
       <form class="new-trip-form">
-        <div class="form-input">
-          <label for="date-input">Check-in:</label>
-          <input class="user-input date-input" type="date" id="date-input-start" name="date">
-        </div>
-        <div class="form-input">
-          <label for="date-input">Check-out:</label>
-          <input class="user-input date-input" type="date" id="date-input-end" name="date">
-        </div>
-        <div class="form-input">
-          <label for="numTravelers">Travelers:</label>
-          <input class="user-input" type="number" id="num-travelers" name="num-travelers" value="2">
-        </div>
-        <div class="form-input">
-          <label for="destination-options">Destination:</label>
-          <select class="user-input" id="destination-options" name="destinations"></select>
-        </div>
-        <!-- <div class="form-buttons"> -->
+        <h3 class="form-input">
+          <label for="check in date">Check-in:
+          <input class="user-input date-input" name="check-in-date" type="date" id="date-input-start" name="date" aria-required="true"></label>
+        </h3>
+        <h3 class="form-input">
+          <label for="check in date">Check-out:
+          <input class="user-input date-input" name="check-out-date" type="date" id="date-input-end" name="date" aria-required="true"></label>
+        </h3>
+        <h3 class="form-input">
+          <label for="numTravelers" name="number-of-travelers">Travelers:
+          <input class="number-of-travelers user-input" type="number" id="num-travelers" name="num-travelers" value="2" aria-required="true"></label>
+        </h3>
+        <h3 class="form-input">
+          <label for="destination-options" name="destination-optioins">Destination:</label>
+          <select class="user-input" id="destination-options" name="destinations" aria-required="true"></select>
+        </h3>
           <input type="reset" class="clear new-trip-button" id="clear" value="Clear">
           <button class="submit new-trip-button" id="submit">Show</button>
-        <!-- </div> -->
       </form>
 
       <section class="proposed-trip" id="proposed-trip">
