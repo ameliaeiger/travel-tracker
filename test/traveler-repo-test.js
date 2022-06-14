@@ -9,7 +9,6 @@ describe('TravelerRepository', () => {
     let travelers
 
 
-
     beforeEach( () => {
         travelers= [
             {
@@ -29,10 +28,9 @@ describe('TravelerRepository', () => {
             },
         ],
 
-        travelerRepo = new TravelerRepo(travelers)
+        travelerRepo = new TravelerRepo(travelers);
 
   });
-
 
     it('should be a function', function () {
         expect(TravelerRepo).to.be.a('function');
@@ -41,9 +39,5 @@ describe('TravelerRepository', () => {
     it('should return a traveler when given an ID', function () {
         expect(travelerRepo.getTraveler(1)).to.deep.equal(travelers[0]);
     });
-
-    // it('should have a name', function () {
-    //     expect(traveler.name).to.equal("Beth");
-    // });
 
 });
