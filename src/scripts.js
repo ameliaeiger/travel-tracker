@@ -164,7 +164,7 @@ function postTrip() {
         fetchData("http://localhost:3001/api/v1/trips").then(data => {
             console.log(data.trips)
             tripRepo = new TripRepo(data.trips);
-            traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentTraveler.id));
+            currentTraveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentTraveler.id));
             renderDisplay(currentTraveler, destRepo, tripRepo);
         });
     });
@@ -205,7 +205,7 @@ function renderTraveler(traveler, destRepo, tripRepo) {
         } else if (trippy.getTripCategory() == "upcoming"){
             futureTrips.push(trip.destinationID);
         } else if (trippy.getTripCategory() == "pending"){
-            console.log(pendingTrips)
+            console.log("Pending Trips: ", pendingTrips)
             pendingTrips.push(trip.destinationID);
         }
     });

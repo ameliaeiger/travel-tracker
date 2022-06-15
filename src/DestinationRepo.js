@@ -10,9 +10,6 @@ class DestinationRepo {
     };
     getDestById(arrayID){
         let destArray = [];
-
-        console.log(arrayID)
-
         arrayID.forEach(id => {
             this.destinations.forEach(destination => {
                 if (destination.id == id) {
@@ -20,6 +17,7 @@ class DestinationRepo {
                 };
             });
         });
+        console.log("Dest Array: ", destArray)
         return destArray;
     };
     getDestByName(cityName){
