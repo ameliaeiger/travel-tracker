@@ -136,6 +136,7 @@ function postTrip() {
    postData(postObj)
     .then(object => {
         fetchData("http://localhost:3001/api/v1/trips").then(data => {
+            console.log(data.trips)
             tripRepo = new TripRepo(data.trips);
             traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentUserID));
             renderDisplay(traveler, destRepo, tripRepo);
