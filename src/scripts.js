@@ -32,6 +32,7 @@ const travelerPastTrips = document.getElementById("traveler-trips-display-past")
 const travelerFutureTrips = document.getElementById("traveler-trips-display-upcoming");
 const travelerPendingTrips = document.getElementById("traveler-trips-display-pending");
 const destinationSelect = document.getElementById("destination-options");
+const annualCost = document.getElementById("annual-cost");
 
 //---       Form
 const newTripForm = document.getElementById("new-trip-request");
@@ -143,8 +144,6 @@ function validateForm() {
 
 function postTrip() {
    let postObj = submitTrip();
-
-
    postData(postObj)
     .then(object => {
         fetchData("http://localhost:3001/api/v1/trips").then(data => {
@@ -190,6 +189,10 @@ function resetDisplay() {
 
 function renderTraveler(traveler, destRepo, tripRepo) {
     welcomeUser.innerHTML = `Welcome, ${traveler.name}!`;
+    let tripsThisYear = tripRepo.getTripsThisYear(traveler.trips);
+    let cost = tripRepo.getAnnualCost(tripsThisYear);
+    let string = `Spent so far this year: $${cost}`;
+    annualCost.innerHTML = string;
     renderAnimation();
 
     let pastTrips = [];

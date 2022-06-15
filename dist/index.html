@@ -7,15 +7,12 @@
   <title>Travel Tracker</title>
 </head>
 <body>
-  <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
-
   <!-- Login -->
   <header class="header">
     <h2 class="welcome-user" id="welcome-user" tabindex="0"></h2>
+    <section class="annual-cost" id="annual-cost"></section>
     <button class="login-button" id="request-login" tabindex="0">Log In</button>
   </header>
-
-
   <!-- Trip Request Form -->
   <div class="trip-request-wrapper">
     <section class="new-trip-request hidden" id="new-trip-request">
@@ -40,7 +37,6 @@
           <!-- <input type="submit" class="submit new-trip-button" id="submit" aria-label="show-cost">Show</button> -->
           <button class="submit new-trip-button" id="submit" disabled="true" aria-label="show-cost">Show</button>
       </form>
-
       <section class="proposed-trip" id="proposed-trip">
         <div class="proposed-trip-cost hidden" id="proposed-trip-container">
           <div id="flight-cost" tabindex="0"></div>
@@ -51,9 +47,6 @@
         </div>
       </section>
     </section>
-
-
-
     <!-- Agency Start -->
     <div class="agency-dashboard hidden" id="agency-dashboard">
       <section class="trip-request-agency" id="trip-request-agency">
@@ -62,25 +55,18 @@
           <button class="x-button" id="x-button">x</button>
         </div>
       </section>
-
       <div class="agency-display-wrapper hidden" id="agency-display-wrapper">
-
         <section class="navbar" id="navbar">
           <button class="top" value="pending">View Pending</button>
           <button value="profits">See Profits</button>
           <button class="bottom" value="today">Today's Trips</button>
         </section>
-
         <section class="agency-display" id="agency-display">
-          Display Content or whatever
         </section>
-
       </div>
       </div>
     <!-- Agency End -->
   </div>
-
-
 <!-- All Trips -->
   <section class="all-user-trips">
   <!-- Past Trips -->
@@ -88,13 +74,11 @@
       <p>Past Trips:</p>
       <div class="traveler-trips-grid past" id="traveler-trips-display-past"></div>
     </div>
-
   <!-- Upcoming Trips -->
     <div class="image-grid-container">
       <p>Upcoming:</p>
       <div class="traveler-trips-grid upcoming" id="traveler-trips-display-upcoming"></div>
     </div>
-
   <!-- Pending Trips -->
     <div class="image-grid-container">
       <p>Pending Trips:</p>
@@ -102,8 +86,6 @@
     </div>
   </section>
 <!-- End All Trips -->
-
-
 <!-- Modal -->
 <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
   <div class="modal__overlay" tabindex="-1" data-micromodal-close>

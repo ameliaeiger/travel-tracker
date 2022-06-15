@@ -17,10 +17,9 @@ class TripRepo {
         }, 0);
         return Math.round((sum * 10) / 10);
       };
-    getTripsThisYear() {
-        return this.trips.filter(trip => {
+    getTripsThisYear(trips) {
+        return trips.filter(trip => {
             if ((trip.category == "past") && (dayjs(trip.date) > dayjs("2022/01/01"))){
-                console.log(trip)
                 return trip
             };
         });

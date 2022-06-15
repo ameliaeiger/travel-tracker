@@ -96,7 +96,7 @@ beforeEach( () => {
 
     it('should find the total cost of trips this year for a traveler', function () {
 
-        let thisYear = tripRepo.getTripsThisYear();
+        let thisYear = tripRepo.getTripsThisYear(traveler.trips);
 
         expect(tripRepo.getAnnualCost(thisYear)).to.equal(1056);
     });
