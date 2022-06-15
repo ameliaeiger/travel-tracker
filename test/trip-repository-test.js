@@ -6,26 +6,19 @@ const dayjs = require('dayjs');
 import TripRepo from '../src/TripRepo';
 import Trip from '../src/Trip';
 import Traveler from '../src/Traveler';
-import TravelerRepo from '../src/TravelerRepo';
-import DestinationRepo from "../src/DestinationRepo.js";
 import Destination from "../src/Destination.js";
 
 describe('TripRepo', () => {
     
-    let destRepo;
-    let destination;
-    let dest;
-    let dest1;
     let tripRepo;
     let destinations;
     let travelerTrips;
     let traveler;
     let allTrips;
-    let tripsArray;
     let trip;
     let trip1;
-    let trip2;
-    let trip3;
+    let dest;
+    let dest1;
 
 beforeEach( () => {
 
@@ -103,10 +96,8 @@ beforeEach( () => {
 
     it('should find the total cost of trips this year for a traveler', function () {
 
+        let thisYear = tripRepo.getTripsThisYear();
 
-        // let roundedSum = Math.round((tripsThisYear * 10) / 10);
-
-        console.log(tripRepo.getTripsThisYear());
-        expect(tripRepo.getAnnualCost()).to.equal(7326);
+        expect(tripRepo.getAnnualCost(thisYear)).to.equal(1056);
     });
 });
