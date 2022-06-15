@@ -55,7 +55,7 @@ const welcomeUser = document.getElementById("welcome-user");
 window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
-login.addEventListener("click", userLogin);
+login.addEventListener("click", loginUser);
 confirmBooking.addEventListener("click", postTrip);
 newTripForm.addEventListener("input", validateForm);
 
@@ -66,32 +66,54 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
         tripRepo = new TripRepo(data[1].trips);
         destRepo = new DestinationRepo(data[2].destinations);
         addDestinationOptions(destRepo);
-        userLogin()
     });
 
 function toggleLogin() {
     MicroModal.show("modal-1");
 };
 
-function userLogin() {
-    resetDisplay();
-    if (username.value == "traveler50" && password.value == "travel") {
-        currentTraveler = travelerRepo.getTraveler(50);
-        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(50));
-        currentUserID = currentTraveler.id;
-        renderDisplay(traveler, destRepo, tripRepo);
+function validateUsername(username) {
+    const usernameWord = username.substring(0, 8);
+    const usernameID = username.substring(8);
+    if (username.value === "") {
+      alert("Username required");
+    } else if (
+      usernameWord === "traveler" &&
+      usernameID <= 50 &&
+      usernameID >= 1
+    ) {
+      return usernameID;
+    } else {
+      alert("Username not found!");
+    }
+  };
+
+function validatePassword(password) {
+    if (password === "") {
+      alert("Please enter a password");
+    } else if (password !== "travel") {
+      alert("Invalid password");
+    } else if (password === "travel") {
+      return true;
+    }
+  };
+
+function loginUser(event) {
+    event.preventDefault();
+    const userID = validateUsername(username.value);
+    const passwordValid = validatePassword(password.value);
+    if (userID === undefined || !passwordValid) {
+      return;
+    }
+    fetchData(`http://localhost:3001/api/v1/travelers/${userID}`).then(data => {
+      currentTraveler = new Traveler(data.id, data.name, data.type, tripRepo.returnAllUserTrips(data.id));
+      console.log(currentTraveler)
+//         traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(50));
+//         currentUserID = currentTraveler.id;
+        renderDisplay(currentTraveler, destRepo, tripRepo);
         MicroModal.close("modal-1");
-    } else if (username.value == "agency" && password.value == "travel") {
-        renderAgencyDisplay();
-        MicroModal.close("modal-1");
-    } else if (username.value && password.value) {
-        currentTraveler = travelerRepo.getTraveler(Math.floor(Math.random() * 50));
-        currentUserID = currentTraveler.id;
-        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentUserID));
-        renderDisplay(traveler, destRepo, tripRepo);
-        MicroModal.close("modal-1");        
-    };
-};
+    });
+  };
 
 function submitTrip(e) {
     if (e){
