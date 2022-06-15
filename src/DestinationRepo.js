@@ -17,7 +17,6 @@ class DestinationRepo {
                 };
             });
         });
-        console.log("Dest Array: ", destArray)
         return destArray;
     };
     getDestByName(cityName){
