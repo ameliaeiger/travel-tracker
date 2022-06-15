@@ -58,7 +58,7 @@ const welcomeUser = document.getElementById("welcome-user");
 
 
 // EVENT LISTENERS
-window.addEventListener("load", toggleLogin);
+// window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
@@ -74,6 +74,7 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
         tripRepo = new TripRepo(data[1].trips);
         destRepo = new DestinationRepo(data[2].destinations);
         addDestinationOptions(destRepo);
+        userLogin()
     });
 
 //---       MicroModal
