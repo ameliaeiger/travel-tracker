@@ -12,7 +12,7 @@ const postData = (postObject) => {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(postObject)
     }).then(response => response.json());
-  }
+  };
 
 
 
@@ -20,4 +20,4 @@ let allTravelersData = fetchData(travelersApi);
 let allTripsData = fetchData(tripsApi);
 let allDestinationsData = fetchData(destinationsApi);
 
-export {allTravelersData, allTripsData, allDestinationsData, postData};
+export {allTravelersData, allTripsData, allDestinationsData, postData, fetchData};

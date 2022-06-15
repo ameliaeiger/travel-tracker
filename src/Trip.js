@@ -19,7 +19,7 @@ class Trip {
         let totalSum = sumLodging + sumFlight;
         this.tripCost = totalSum * 1.1;
       };
-      getTripCategory = () => {
+    getTripCategory = () => {
         if (this.status === "pending") {
           return (this.category = "pending");
         } else if (dayjs().isAfter(dayjs(this.date))) {
@@ -28,8 +28,8 @@ class Trip {
           return (this.category = "present");
         } else if (dayjs().isBefore(dayjs(this.date))) {
           return (this.category = "upcoming");
-        }
-      };
-}
+        };
+    };
+};
 
 export default Trip;
