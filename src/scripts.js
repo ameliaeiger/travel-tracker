@@ -121,15 +121,18 @@ function submitTrip(e) {
     }
     let start = dayjs(startDate.value);
     let end = dayjs(endDate.value);
-    let date = dayjs(start).format("YYYY/MM/DD");
     let duration = end.diff(start, "day");
+
+    let date = dayjs(start).format("YYYY/MM/DD");
     let num = parseInt(numTravelers.value);
+
     let destName = destinationInput.value;
     let destID = destRepo.getDestByName(destName);
     let destObj = destRepo.destinations[destID];
+
     let newTripData = {
         "id": tripRepo.trips.length + 1,
-        "userID": currentUserID,
+        "userID": currentTraveler.id,
         "destinationID": destID,
         "travelers": num,
         "date": date,
@@ -155,13 +158,14 @@ function validateForm() {
 
 function postTrip() {
    let postObj = submitTrip();
+    console.log(postObj)
    postData(postObj)
     .then(object => {
         fetchData("http://localhost:3001/api/v1/trips").then(data => {
             console.log(data.trips)
             tripRepo = new TripRepo(data.trips);
-            traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentUserID));
-            renderDisplay(traveler, destRepo, tripRepo);
+            traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentTraveler.id));
+            renderDisplay(currentTraveler, destRepo, tripRepo);
         });
     });
 };
@@ -201,6 +205,7 @@ function renderTraveler(traveler, destRepo, tripRepo) {
         } else if (trippy.getTripCategory() == "upcoming"){
             futureTrips.push(trip.destinationID);
         } else if (trippy.getTripCategory() == "pending"){
+            console.log(pendingTrips)
             pendingTrips.push(trip.destinationID);
         }
     });

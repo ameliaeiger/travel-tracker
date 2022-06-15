@@ -10,13 +10,18 @@ class DestinationRepo {
     };
     getDestById(arrayID){
         let destArray = [];
-        this.destinations.forEach(function(destination){
-            if (arrayID.includes(destination.id)){
-                destArray.push(destination);
-            };
+
+        console.log(arrayID)
+
+        arrayID.forEach(id => {
+            this.destinations.forEach(destination => {
+                if (destination.id == id) {
+                    destArray.push(destination)
+                };
+            });
         });
         return destArray;
-    }
+    };
     getDestByName(cityName){
         let result = this.destinations.find(destination => destination.destination.includes(cityName));
         return result.id

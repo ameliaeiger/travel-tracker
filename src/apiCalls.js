@@ -14,8 +14,6 @@ const postData = (postObject) => {
     }).then(response => response.json());
   };
 
-
-
 let allTravelersData = fetchData(travelersApi);
 let allTripsData = fetchData(tripsApi);
 let allDestinationsData = fetchData(destinationsApi);
