@@ -10,22 +10,20 @@ class TripRepo {
             return trip.userID == id
         });
     };
-    getAnnualCost = () => {
-        return this.trips.reduce((acc, trip) => {
+    getAnnualCost = (trips) => {
+        let sum = trips.reduce((acc, trip) => {
           acc += trip.tripCost;
           return acc;
         }, 0);
+        return Math.round((sum * 10) / 10);
       };
-    // getTripsThisYear() {
-
-    //     console.log(this.trips)
-    //     return this.trips.filter(trip => {
-    //         if (trip.category == "past" && dayjs(trip.date) > dayjs().format("YYYY/MM/DD")){
-    //             console.log(trip)
-    //             return trip
-    //         };
-    //     });
-    // };
+    getTripsThisYear(trips) {
+        return trips.filter(trip => {
+            if ((trip.category == "past") && (dayjs(trip.date) > dayjs("2022/01/01"))){
+                return trip
+            };
+        });
+    };
       
 };
 
