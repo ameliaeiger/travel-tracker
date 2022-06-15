@@ -16,7 +16,6 @@ import Trip from './Trip.js';
 import './css/styles.css';
 import './images/turing-logo.png';
 
-
 // GLOBALS
 let currentUserID;
 let currentTraveler;
@@ -33,8 +32,6 @@ const travelerFutureTrips = document.getElementById("traveler-trips-display-upco
 const travelerPendingTrips = document.getElementById("traveler-trips-display-pending");
 const destinationSelect = document.getElementById("destination-options");
 const annualCost = document.getElementById("annual-cost");
-
-//---       Form
 const newTripForm = document.getElementById("new-trip-request");
 const startDate = document.getElementById("date-input-start");
 const endDate = document.getElementById("date-input-end");
@@ -42,32 +39,27 @@ const destinationInput = document.getElementById("destination-options");
 const numTravelers = document.getElementById("num-travelers");
 const submit = document.getElementById("submit");
 const confirmBooking = document.getElementById("confirm-booking");
-//---       Proposed Trip
 const proposedTripContainer = document.getElementById("proposed-trip-container");
 const proposedTrip = document.getElementById("proposed-trip");
 const proposedTripTotal = document.getElementById("total-cost");
 const lodgingCost = document.getElementById("lodging-cost");
 const proposedTripSum = document.getElementById("trip-sum");
 const flightCost = document.getElementById("flight-cost");
-//---       Login
 const requestLogin = document.getElementById("request-login");
 const login = document.getElementById("confirm-login-button");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
-
 // EVENT LISTENERS
-// window.addEventListener("load", toggleLogin);
+window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", userLogin);
 confirmBooking.addEventListener("click", postTrip);
 newTripForm.addEventListener("input", validateForm);
 
-
 // FUNCTIONS
-//---       Promise All
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
     .then(data => {
         travelerRepo = new TravelerRepo(data[0].travelers);
@@ -77,34 +69,30 @@ Promise.all([allTravelersData, allTripsData, allDestinationsData])
         userLogin()
     });
 
-//---       MicroModal
 function toggleLogin() {
     MicroModal.show("modal-1");
 };
 
-//---        Login
 function userLogin() {
     resetDisplay();
-    if (username.value == "traveler50" && password.value == "travel"){
+    if (username.value == "traveler50" && password.value == "travel") {
         currentTraveler = travelerRepo.getTraveler(50);
         traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(50));
         currentUserID = currentTraveler.id;
         renderDisplay(traveler, destRepo, tripRepo);
         MicroModal.close("modal-1");
-    } else if (username.value == "agency" && password.value == "travel"){
+    } else if (username.value == "agency" && password.value == "travel") {
         renderAgencyDisplay();
         MicroModal.close("modal-1");
-    } else {
+    } else if (username.value && password.value) {
         currentTraveler = travelerRepo.getTraveler(Math.floor(Math.random() * 50));
         currentUserID = currentTraveler.id;
         traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentUserID));
         renderDisplay(traveler, destRepo, tripRepo);
-        // MicroModal.close("modal-1");        
+        MicroModal.close("modal-1");        
     };
 };
 
-
-//---       New Trip
 function submitTrip(e) {
     if (e){
     e.preventDefault();
@@ -155,21 +143,6 @@ function postTrip() {
     });
 };
 
-function showTripCost(destObj, newTrip) {
-    let flightCost = destObj.estimatedFlightCostPerPerson * newTrip.travelers;
-    let lodgingCost = destObj.estimatedLodgingCostPerDay * newTrip.duration;
-    let sum = flightCost + lodgingCost;
-    let sumFee =  (flightCost + lodgingCost) * 1.1;
-    let object = {
-        "flight": flightCost,
-        "lodging": lodgingCost,
-        "sum": (Math.round(sum * 10) / 10),
-        "sumFee": (Math.round(sumFee * 10) / 10)
-    };
-    return object;
-};
-
-
 //---        DOM
 function renderDisplay(traveler, destRepo, tripRepo) {
     resetDisplay();
@@ -186,16 +159,15 @@ function resetDisplay() {
     agencyDisplayWrapper.className = "agency-display-wrapper hidden";
     agencyDashboard.className = "agency-dashboard hidden";
     proposedTripContainer.className = "proposed-trip-cost hidden";
-}
+};
 
 function renderTraveler(traveler, destRepo, tripRepo) {
     welcomeUser.innerHTML = `Welcome, ${traveler.name}!`;
     let tripsThisYear = tripRepo.getTripsThisYear(traveler.trips);
     let cost = tripRepo.getAnnualCost(tripsThisYear);
-    let string = `Spent so far this year: $${cost}`;
+    let string = `This Year's Expenses: $${cost}`;
     annualCost.innerHTML = string;
     renderAnimation();
-
     let pastTrips = [];
     let futureTrips = [];
     let pendingTrips = [];
@@ -251,7 +223,6 @@ function addDestinationOptions(destinationsRepo) {
         let countryA = splitA[1]
         let splitB = b.split(",")
         let countryB = splitB[1]
-        
         if (countryA > countryB){
             return 1
         } else {
@@ -287,6 +258,22 @@ function createImageNodes(trips, when) {
     });
 };
 
+function showTripCost(destObj, newTrip) {
+    let flightCost = destObj.estimatedFlightCostPerPerson * newTrip.travelers;
+    let lodgingCost = destObj.estimatedLodgingCostPerDay * newTrip.duration;
+    let sum = flightCost + lodgingCost;
+    let sumFee =  (flightCost + lodgingCost) * 1.1;
+    let object = {
+        "flight": flightCost,
+        "lodging": lodgingCost,
+        "sum": (Math.round(sum * 10) / 10),
+        "sumFee": (Math.round(sumFee * 10) / 10)
+    };
+    return object;
+};
+
+
+
 
 
 
@@ -306,7 +293,6 @@ navbar.addEventListener("click", function(event) {
     console.log(event.target.value)
     agencyDisplay.innerText = event.target.value
 });
-
 
 // ---       Agency DOM Functions
 function renderAgencyDisplay() {
