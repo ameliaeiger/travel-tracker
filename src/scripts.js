@@ -94,12 +94,12 @@ function userLogin() {
     } else if (username.value == "agency" && password.value == "travel"){
         renderAgencyDisplay();
         MicroModal.close("modal-1");
-    } else if (username.value && password.value){
+    } else {
         currentTraveler = travelerRepo.getTraveler(Math.floor(Math.random() * 50));
         currentUserID = currentTraveler.id;
         traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentUserID));
         renderDisplay(traveler, destRepo, tripRepo);
-        MicroModal.close("modal-1");        
+        // MicroModal.close("modal-1");        
     };
 };
 
@@ -274,6 +274,7 @@ function createImageNodes(trips, when) {
         imageNode.classList.add("traveler-image");
         imageNode.src = destination.image;
         imageNode.alt = destination.alt;
+        imageNode.tabIndex = "0";       
         if (when === "past") {
             travelerPastTrips.appendChild(imageNode);
         };
