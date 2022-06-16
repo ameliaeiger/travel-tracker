@@ -149,7 +149,8 @@ function submitTrip(e) {
     };
     let newTrip = new Trip(newTripData)
     newTrip.getTripCost(destRepo.destinations[destID]);
-    newTrip.getTripCategory(destRepo.destinations[destID]);
+    // newTrip.getTripCategory(destRepo.destinations[destID]);
+    // newTrip.getTripCategory();
     let costObject = showTripCost(destRepo.destinations[destID], newTrip)
     animateShowCost(costObject)
     return newTrip
@@ -166,8 +167,8 @@ function postTrip() {
    postData(postObj)
     .then(object => {
         fetchData("http://localhost:3001/api/v1/trips").then(data => {
-            console.log(data.trips)
-            tripRepo = new TripRepo(data.trips);
+            let objects = data.trips.map(trip => new Trip(trip));
+            tripRepo = new TripRepo(objects);
             currentTraveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentTraveler.id));
             renderTraveler(currentTraveler, destRepo, tripRepo);
         });
@@ -200,12 +201,16 @@ function renderTraveler(traveler, destRepo, tripRepo) {
     let futureTrips = [];
     let pendingTrips = [];
     traveler.trips.forEach(trip => {
-        let trippy = new Trip (trip)
-        if (trippy.getTripCategory() == "past"){
+        console.log("Trip: ", trip)
+        if(!trip.category){
+            trip.getTripCategory()
+        };
+        // let trippy = new Trip (trip)
+        if (trip.category == "past"){
             pastTrips.push(trip.destinationID);
-        } else if (trippy.getTripCategory() == "upcoming"){
+        } else if (trip.category == "upcoming"){
             futureTrips.push(trip.destinationID);
-        } else if (trippy.getTripCategory() == "pending"){
+        } else if (trip.category == "pending"){
             pendingTrips.push(trip.destinationID);
         };
     });
@@ -224,7 +229,7 @@ function showAnnualCost() {
     tripsThisYear.forEach(trip => {
         let tripID = trip.destinationID;
         let thisDest = destRepo.getDestByNumber(tripID);
-        let cost = trip.getTripCost(thisDest)
+        trip.getTripCost(thisDest)
     })
 
     let cost = tripRepo.getAnnualCost(tripsThisYear);
@@ -285,21 +290,38 @@ function addDestinationOptions(destinationsRepo) {
 
 function createImageNodes(trips, when) {
     trips.forEach(function(destination, index){
+        let newDiv = document.createElement("div")
+        let textNode = document.createElement("p");
+        textNode.innerText = destination.destination;
+
+        newDiv.appendChild(textNode)
+
+        console.log(textNode, index)
+        
         let imageNode = document.createElement("img");
         let classString = `img${index}`;
         imageNode.classList.add(classString);
-        imageNode.classList.add("traveler-image");
+        // imageNode.classList.add("traveler-image");
         imageNode.src = destination.image;
         imageNode.alt = destination.alt;
-        imageNode.tabIndex = "0";       
+        imageNode.tabIndex = "0";   
+        newDiv.appendChild(imageNode)
+        newDiv.classList.add("traveler-image")
+        
+    
         if (when === "past") {
-            travelerPastTrips.appendChild(imageNode);
+            // travelerPastTrips.appendChild(imageNode);
+            travelerPastTrips.appendChild(newDiv);
         };
         if (when === "future") {
-            travelerFutureTrips.appendChild(imageNode);
+            // travelerFutureTrips.appendChild(imageNode);
+            travelerFutureTrips.appendChild(newDiv);
+
         };
         if (when === "pending") {
-            travelerPendingTrips.appendChild(imageNode);
+            // travelerPendingTrips.appendChild(imageNode);
+            travelerPendingTrips.appendChild(newDiv);
+
         };
     });
 };
