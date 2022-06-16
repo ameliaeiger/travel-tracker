@@ -312,9 +312,23 @@ function showTripCost(destObj, newTrip) {
     return object;
 };
 
+const showPastButton = document.getElementById("show-past");
+const showFutureButton = document.getElementById("show-future");
+const showPendingButton = document.getElementById("show-pending");
+const showExpensesButton = document.getElementById("show-expenses");
+
+function toggleClasses(element){
+    if (element.classList.contains("border")){
+        element.classList.remove("border")
+    };
+};
+
 allUserTripsDisplay.addEventListener("click", function(event) {
     if (event.target.value == "past" && pastContainer.classList.contains("hidden")){
-        console.log("trigger past")
+        event.target.classList.add("border");
+        toggleClasses(showFutureButton);
+        toggleClasses(showPendingButton);
+        toggleClasses(showExpensesButton);
         pastContainer.classList.remove("hidden");
         pastContainer.classList.add("appear");
         if (!futureContainer.classList.contains("hidden")){
@@ -328,6 +342,10 @@ allUserTripsDisplay.addEventListener("click", function(event) {
         };
     };
     if (event.target.value == "upcoming" && futureContainer.classList.contains("hidden")){
+        event.target.classList.add("border");
+        toggleClasses(showPastButton);
+        toggleClasses(showPendingButton);
+        toggleClasses(showExpensesButton);
         futureContainer.classList.remove("hidden");
         futureContainer.classList.add("appear");
         if (!pastContainer.classList.contains("hidden")){
@@ -341,6 +359,10 @@ allUserTripsDisplay.addEventListener("click", function(event) {
         };
     };
     if (event.target.value == "pending" && pendingContainer.classList.contains("hidden")){
+        event.target.classList.add("border");
+        toggleClasses(showFutureButton);
+        toggleClasses(showPastButton);
+        toggleClasses(showExpensesButton);
         pendingContainer.classList.remove("hidden");
         pendingContainer.classList.add("appear");
         if (!futureContainer.classList.contains("hidden")){
@@ -354,6 +376,10 @@ allUserTripsDisplay.addEventListener("click", function(event) {
         };
     };
     if (event.target.value == "expenses" && expenseContainer.classList.contains("hidden")){
+        event.target.classList.add("border");
+        toggleClasses(showFutureButton);
+        toggleClasses(showPastButton);
+        toggleClasses(showPendingButton);
         expenseContainer.classList.remove("hidden");
         expenseContainer.classList.add("appear");
         if (!futureContainer.classList.contains("hidden")){

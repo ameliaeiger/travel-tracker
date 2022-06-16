@@ -69,10 +69,10 @@
 
 
     <section class="navbar user-nav" id="user-nav">
-      <button class="left" value="past">Past Trips</button>
-      <button value="upcoming">Upcoming Trips</button>
-      <button value="pending">Pending</button>
-      <button class="right" value="expenses">Expenses</button>
+      <button class="border" id="show-past" value="past">Past Trips</button>
+      <button id="show-future" value="upcoming">Upcoming Trips</button>
+      <button id="show-pending" value="pending">Pending</button>
+      <button id="show-expenses" class="right" value="expenses">Expenses</button>
     </section>
 
 
@@ -80,17 +80,14 @@
   <section class="all-user-trips" id="all-user-trips">
   <!-- Past Trips -->
     <div class="image-grid-container" id="past-div">
-      <p>Past Trips:</p>
       <div class="traveler-trips-grid past" id="traveler-trips-display-past"></div>
     </div>
   <!-- Upcoming Trips -->
     <div class="image-grid-container hidden" id="future-div">
-      <p>Upcoming:</p>
       <div class="traveler-trips-grid upcoming" id="traveler-trips-display-upcoming"></div>
     </div>
   <!-- Pending Trips -->
     <div class="image-grid-container hidden" id="pending-div">
-      <p>Pending Trips:</p>
       <div class="traveler-trips-grid pending" id="traveler-trips-display-pending"></div>
     </div>
   <!-- Expenses -->
