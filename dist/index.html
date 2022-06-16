@@ -10,7 +10,6 @@
   <!-- Login -->
   <header class="header">
     <h2 class="welcome-user" id="welcome-user" tabindex="0"></h2>
-    <section class="annual-cost" id="annual-cost" tabindex="0"></section>
     <button class="login-button" id="request-login" tabindex="0">Log In</button>
   </header>
   <!-- Trip Request Form -->
@@ -78,23 +77,28 @@
 
 
 <!-- All Trips -->
-  <section class="all-user-trips">
+  <section class="all-user-trips" id="all-user-trips">
   <!-- Past Trips -->
-    <div class="image-grid-container">
+    <div class="image-grid-container" id="past-div">
       <p>Past Trips:</p>
       <div class="traveler-trips-grid past" id="traveler-trips-display-past"></div>
     </div>
   <!-- Upcoming Trips -->
-    <div class="image-grid-container">
+    <div class="image-grid-container hidden" id="future-div">
       <p>Upcoming:</p>
       <div class="traveler-trips-grid upcoming" id="traveler-trips-display-upcoming"></div>
     </div>
   <!-- Pending Trips -->
-    <div class="image-grid-container">
+    <div class="image-grid-container hidden" id="pending-div">
       <p>Pending Trips:</p>
       <div class="traveler-trips-grid pending" id="traveler-trips-display-pending"></div>
     </div>
+  <!-- Expenses -->
+  <div class="hidden" id="annual-cost-div">
+    <section class="annual-cost" id="annual-cost" tabindex="0"></section>
   </section>
+
+
 <!-- End All Trips -->
 <!-- Modal -->
 <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
