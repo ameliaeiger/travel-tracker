@@ -16,9 +16,6 @@ let currentTraveler;
 let travelerRepo;
 let tripRepo;
 let destRepo;
-// let allPastDestinations;
-// let allFutureDestinations;
-// let allPendingDestinations;
 
 // QUERY SELECTORS
 const travelerPastTrips = document.getElementById("traveler-trips-display-past");
@@ -44,6 +41,7 @@ const login = document.getElementById("confirm-login-button");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
+const clearButton = document.getElementById("clear");
 
 // EVENT LISTENERS
 submit.addEventListener("click", submitTrip);
@@ -51,6 +49,8 @@ requestLogin.addEventListener("click", function(){MicroModal.show("modal-1");});
 login.addEventListener("click", loginUser);
 confirmBooking.addEventListener("click", postTrip);
 newTripForm.addEventListener("input", validateForm);
+clearButton.addEventListener("click", disableButton);
+
 
 // FUNCTIONS
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
@@ -93,7 +93,17 @@ function validatePassword(password) {
 function validateForm() {
     if(startDate.value && endDate.value) {
       submit.disabled = false;
+      submit.className = "submit new-trip-button active";
+    } else {
+        submit.className = "submit new-trip-button"
     };
+  };
+
+  function disableButton() {
+    proposedTripContainer.className = "proposed-trip-cost hidden";
+    proposedTrip.className = "proposed-trip"
+    submit.className = "submit new-trip-button";
+    submit.disabled = true;
   };
 
 function loginUser(event) {
@@ -133,9 +143,9 @@ function submitTrip(e) {
     };
     let newTrip = new Trip(newTripData)
     newTrip.getTripCost(destRepo.destinations[destID]);
-    let costObject = showTripCost(destRepo.destinations[destID], newTrip)
-    animateShowCost(costObject)
-    return newTrip
+    let costObject = showTripCost(destRepo.destinations[destID], newTrip);
+    animateShowCost(costObject);
+    return newTrip;
 };
 
 function postTrip() {
@@ -252,17 +262,12 @@ function addDestinationOptions(destinationsRepo) {
 };
 
 function createImageNodes(trips, when, tripObs) {
-    console.log(tripObs)
-
     tripObs.forEach(object => {
-        console.log(object.destinationID);
         let destination = destRepo.getDestByNumber(object.destinationID);
         let newDiv = document.createElement("div");
         let textNode = document.createElement("p");
         let imageNode = document.createElement("img");
         let textString = `Destination: ${destination.destination}<br>Date: ${object.date}`;
-        console.log(textString)
-
 
         newDiv.classList.add("traveler-image");
         textNode.classList.add("image-text");
@@ -271,7 +276,7 @@ function createImageNodes(trips, when, tripObs) {
         textNode.innerHTML = textString;
         imageNode.src = destination.image;
         imageNode.alt = destination.alt;
-        imageNode.tabIndex = "0";   
+        imageNode.tabIndex = "0";  
 
         newDiv.appendChild(textNode);
         newDiv.appendChild(imageNode);
@@ -301,8 +306,6 @@ function showTripCost(destObj, newTrip) {
     };
     return object;
 };
-
-
 
 
 

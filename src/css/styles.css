@@ -32,6 +32,39 @@
   }
 }
 
+#user-nav {
+  flex-direction: row;
+  justify-content: center;
+  margin: 0px;
+  padding: 5px;
+  width: 100%;
+}
+
+.user-nav > button {
+  font-size: 17px;
+  height: 100%;
+  padding: 10px 35px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  border-bottom: 2px solid white;
+}
+
+.user-nav > button:hover {
+  /* color: white !important; */
+  /* background-color: black !important; */
+  border-bottom: 2px solid gainsboro;
+}
+
+/* .left {
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+
+.right {
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+} */
+
 .appear {
   animation: appear;
   animation-timing-function: ease-in;
@@ -52,6 +85,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 button {
@@ -71,22 +105,26 @@ h3 {
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 25px;
+  width: 100%;
+  max-width: 100%;
+  padding: 25px 0px;
 }
 
 .login-button {
   font-size: 20px;
-  padding: 0px 25px;
+  padding: 10px 25px;
   border-radius: 5px;
   border: 1px solid gray;
   background-color: #f1d859;
   box-shadow: 1px 1px 4px gray;
+  margin: 10px 25px 10px 0px;
 }
 
 .welcome-user {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 20px;
   font-weight: normal;
+  margin-left: 25px;
 }
 
 .annual-cost {
@@ -176,7 +214,12 @@ input::-webkit-calendar-picker-indicator {
   padding: 0px;
 }
 
-.new-trip-button:hover {
+.submit.active {
+  color: white;
+  background-color: black;
+}
+
+.active:hover {
   cursor: pointer;
   background-color: black;
   color: white;
@@ -490,7 +533,7 @@ input::-webkit-calendar-picker-indicator {
   border-radius: 20px;
 }
 
-.navbar > button {
+/* .navbar > button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -499,7 +542,7 @@ input::-webkit-calendar-picker-indicator {
   padding: 10px 35px;
   border: none;
   background-color: transparent;
-}
+} */
 
 .top {
   border-top-left-radius: 20px;
