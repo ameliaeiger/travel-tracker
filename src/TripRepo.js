@@ -19,10 +19,12 @@ class TripRepo {
       };
     getTripsThisYear(trips) {
         return trips.filter(trip => {
-            if ((trip.category == "past") && (dayjs(trip.date) > dayjs("2022/01/01"))){
+            if ((trip.status == "approved") && (dayjs(trip.date) > dayjs("2022/01/01")) && (dayjs(trip.date) < dayjs())){
                 return trip
             };
         });
+        // return trip;
+        // return yearTrips.map(trip => trip.destinationID);
     };
       
 };

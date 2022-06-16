@@ -33,8 +33,7 @@
             <label for="destination-options" name="destination-options" tabindex="0">Destination:</label>
             <select class="user-input" id="destination-options" name="destinations" aria-required="true" required/></select>
           </h3>
-          <input type="reset" class="new-trip-button" id="clear" value="Clear" aria-label="reset-form-button">
-          <!-- <input type="submit" class="submit new-trip-button" id="submit" aria-label="show-cost">Show</button> -->
+          <input type="reset" class="new-trip-button active" id="clear" value="Clear" aria-label="reset-form-button">
           <button class="submit new-trip-button" id="submit" disabled="true" aria-label="show-cost">Show</button>
       </form>
       <section class="proposed-trip" id="proposed-trip">
@@ -67,6 +66,17 @@
       </div>
     <!-- Agency End -->
   </div>
+<!-- Toggle Form -->
+
+
+    <section class="navbar user-nav" id="user-nav">
+      <button class="left" value="past">Past Trips</button>
+      <button value="upcoming">Upcoming Trips</button>
+      <button value="pending">Pending</button>
+      <button class="right" value="expenses">Expenses</button>
+    </section>
+
+
 <!-- All Trips -->
   <section class="all-user-trips">
   <!-- Past Trips -->
@@ -109,7 +119,7 @@
       </main>
       <footer class="modal__footer">
         <button class="modal__btn modal__btn-primary" id="confirm-login-button">Continue</button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+        <button class="modal__btn" id="close-login" data-micromodal-close aria-label="Close this dialog window">Close</button>
       </footer>
     </div>
   </div>

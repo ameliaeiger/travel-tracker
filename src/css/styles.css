@@ -3,12 +3,10 @@
     opacity: 0;
     transform: translateX(70%);
   }
-
   60% {
     height: 115%;
     width: 115%;
   }
-
   100% {
     opacity: 1;
     transform: translateX(0%);
@@ -19,7 +17,6 @@
   0% {
     opacity: 0;
   }
-
   100% {
     opacity: 1;
   }
@@ -35,13 +32,44 @@
   }
 }
 
+#user-nav {
+  flex-direction: row;
+  justify-content: center;
+  margin: 0px;
+  padding: 5px;
+  width: 100%;
+}
+
+.user-nav > button {
+  font-size: 17px;
+  height: 100%;
+  padding: 10px 35px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  border-bottom: 2px solid white;
+}
+
+.user-nav > button:hover {
+  /* color: white !important; */
+  /* background-color: black !important; */
+  border-bottom: 2px solid gainsboro;
+}
+
+/* .left {
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+
+.right {
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+} */
 
 .appear {
   animation: appear;
   animation-timing-function: ease-in;
   animation-duration: 0.5s;
 }
-
 
 .hidden {
   display: none !important;
@@ -57,6 +85,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 button {
@@ -76,22 +105,26 @@ h3 {
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 25px;
+  width: 100%;
+  max-width: 100%;
+  padding: 25px 0px;
 }
 
 .login-button {
   font-size: 20px;
-  padding: 0px 25px;
+  padding: 10px 25px;
   border-radius: 5px;
   border: 1px solid gray;
   background-color: #f1d859;
   box-shadow: 1px 1px 4px gray;
+  margin: 10px 25px 10px 0px;
 }
 
 .welcome-user {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 20px;
   font-weight: normal;
+  margin-left: 25px;
 }
 
 .annual-cost {
@@ -99,101 +132,6 @@ h3 {
   align-items: center;
 }
 
-/* Agency Display */
-.agency-dashboard {
-  display: flex;
-  width: 100%;
-  height: auto;
-  justify-content: center;
-  align-items: center;
-}
-.trip-request-agency {
-  display: flex;
-  justify-content: space-between;
-  max-width: 900px;
-  height: auto;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 25px;
-  margin: 50px;
-  box-shadow: 2px 2px 5px;
-}
-
-.agency-greeting-wrapper {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-}
-
-.greeting-text {
-  padding: 40px 25px;
-  margin: 0px;
-}
-
-.x-button {
-  padding: 3px;
-  position: relative;
-  bottom: 30%;
-  color: gray;
-  border: none;
-  background-color: hsla(0, 0%, 100%, 0);
-}
-
-.agency-display-wrapper {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.agency-display {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-  max-height: 100%;
-  width: 70%;
-  /* background-color: rgba(255, 255, 255, 0.3); */
-  border: 2px solid black;
-}
-
-.navbar {
-  display: flex;
-  flex-direction: column;
-
-  width: 8%;
-  margin: 20px 100px 20px 20px;
-  background-color: rgba(255, 255, 255, 0.8);
-
-  /* border: 2px solid gray; */
-  border-radius: 20px;
-}
-
-.navbar > button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-  height: 100%;
-  padding: 10px 35px;
-  border: none;
-  background-color: transparent;
-}
-
-.top {
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.5) !important;
-}
-
-.bottom {
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-top: 1px solid rgba(128, 128, 128, 0.5) !important;
-}
-
-.navbar > button:hover {
-  color: black;
-  background-color: rgba(255, 255, 255, 0.9);
-}
 
 
 
@@ -221,7 +159,6 @@ h3 {
   border-radius: 25px;
   margin: 50px;
   box-shadow: 2px 2px 5px;
-  
 }
 
 .show-cost {
@@ -232,7 +169,7 @@ h3 {
 .increase-margin {
   margin-top: 60px;
   animation: increaseMargin;
-  animation-duration: 3s;
+  animation-duration: 1s;
 }
 
 .request-new-trip {
@@ -277,7 +214,12 @@ input::-webkit-calendar-picker-indicator {
   padding: 0px;
 }
 
-.new-trip-button:hover {
+.submit.active {
+  color: white;
+  background-color: black;
+}
+
+.active:hover {
   cursor: pointer;
   background-color: black;
   color: white;
@@ -301,29 +243,46 @@ input::-webkit-calendar-picker-indicator {
   align-items: center;
   width: 100%;
   height: auto;
-  margin-top: 15px;
+  border-bottom: 7px solid black;
 }
 
 .traveler-trips-grid {
   display: grid;
-  grid-template-columns: 300px 300px 300px;
+  grid-template-columns: 380px 380px 380px;
   grid-template-rows: 300px;
-  /* grid-auto-rows: 300px; */
-  grid-auto-columns: 300px;
+  grid-auto-rows: 300px;
+  grid-auto-columns: 400px;
   row-gap: 10px;
   column-gap: 50px;
+  margin: 15px 0px;
+
 }
 
 .traveler-image {
   display: flex;
+  justify-content: space-between;
   height: 100%;
-  width: 100%;
+  max-width: 100%;
   animation-name: slideFromRight;
 	animation-timing-function:cubic-bezier(0.445, 0.05, 0.55, 0.95);
 	visibility: visible;
   overflow: hidden;
   animation-direction: alternate;
 }
+
+.img {
+  display: flex;
+  height: auto;
+  max-width: 75%;
+}
+
+.image-text {
+  display: flex;
+  align-items: center;
+  width: 25%;
+
+}
+
 
 .traveler-image:nth-child(1) {
   animation-duration: 1s;
@@ -348,6 +307,7 @@ input::-webkit-calendar-picker-indicator {
 .traveler-image:nth-child(6) {
   animation-duration: 1.4s;
 } 
+
 
 /* Modal */
 .modal {
@@ -453,10 +413,6 @@ input::-webkit-calendar-picker-indicator {
 }
 
 
-
-/**************************\
-  Demo Animation Style
-\**************************/
 @keyframes mmfadeIn {
     from { opacity: 0; }
       to { opacity: 1; }
@@ -508,27 +464,102 @@ input::-webkit-calendar-picker-indicator {
 
 
 
-
-/* .glide__slide[class*="active"] {
-  background: linear-gradient(-45deg, #ed145b, #7b31f4);
+/* Agency Display */
+.agency-dashboard {
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-items: center;
 }
 
-.glide__arrows {
-  padding: 5px;
+.trip-request-agency {
+  display: flex;
+  justify-content: space-between;
+  max-width: 900px;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  margin: 50px;
+  box-shadow: 2px 2px 5px;
 }
 
-.glide__arrow {
+.agency-greeting-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.greeting-text {
+  padding: 40px 25px;
+  margin: 0px;
+}
+
+.x-button {
+  padding: 3px;
   position: relative;
-  top: 0;
-  margin: 0;
-  transform: none;
-  left: 0;
-  right: 0;
-  padding: 5px;
-  background-color: #818999;
-  transition: all 0.2s ease-in-out;
+  bottom: 30%;
+  color: gray;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0);
 }
 
-.glide__arrow:hover {
-  background-color: #ed145b;
+.agency-display-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.agency-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  max-height: 100%;
+  width: 70%;
+  /* background-color: rgba(255, 255, 255, 0.3); */
+  border: 2px solid black;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+
+  width: 8%;
+  margin: 20px 100px 20px 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+
+  /* border: 2px solid gray; */
+  border-radius: 20px;
+}
+
+/* .navbar > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  height: 100%;
+  padding: 10px 35px;
+  border: none;
+  background-color: transparent;
 } */
+
+.top {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5) !important;
+}
+
+.bottom {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top: 1px solid rgba(128, 128, 128, 0.5) !important;
+}
+
+.navbar > button:hover {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+
+

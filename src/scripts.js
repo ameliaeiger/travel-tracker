@@ -1,6 +1,3 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
-
 // LIBRARIES
 const dayjs = require('dayjs');
 import MicroModal from 'micromodal'; 
@@ -8,25 +5,19 @@ import MicroModal from 'micromodal';
 // IMPORTS
 import { allTravelersData, allTripsData, allDestinationsData, postData, fetchData } from './apiCalls';
 import DestinationRepo from './DestinationRepo';
-import Destination from './Destination';
 import TravelerRepo from './TravelerRepo';
 import Traveler from './Traveler';
 import TripRepo from './TripRepo.js';
 import Trip from './Trip.js';
 import './css/styles.css';
-import './images/turing-logo.png';
 
-// GLOBALS
-let currentUserID;
+// GLOBAL VARIABLES
 let currentTraveler;
 let travelerRepo;
-let traveler;
 let tripRepo;
 let destRepo;
-let allPastDestinations;
-let allFutureDestinations;
-let allPendingDestinations;
 
+// QUERY SELECTORS
 const travelerPastTrips = document.getElementById("traveler-trips-display-past");
 const travelerFutureTrips = document.getElementById("traveler-trips-display-upcoming");
 const travelerPendingTrips = document.getElementById("traveler-trips-display-pending");
@@ -50,48 +41,86 @@ const login = document.getElementById("confirm-login-button");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
+const clearButton = document.getElementById("clear");
 
 // EVENT LISTENERS
-window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
-requestLogin.addEventListener("click", toggleLogin);
-login.addEventListener("click", userLogin);
+requestLogin.addEventListener("click", function(){MicroModal.show("modal-1");});
+login.addEventListener("click", loginUser);
 confirmBooking.addEventListener("click", postTrip);
 newTripForm.addEventListener("input", validateForm);
+clearButton.addEventListener("click", disableButton);
+
 
 // FUNCTIONS
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
     .then(data => {
+        let trips = data[1].trips.map(trip => new Trip(trip));
+        tripRepo = new TripRepo(trips);
         travelerRepo = new TravelerRepo(data[0].travelers);
-        tripRepo = new TripRepo(data[1].trips);
         destRepo = new DestinationRepo(data[2].destinations);
+        MicroModal.show("modal-1");
         addDestinationOptions(destRepo);
-        userLogin()
-    });
+});
 
-function toggleLogin() {
-    MicroModal.show("modal-1");
-};
-
-function userLogin() {
-    resetDisplay();
-    if (username.value == "traveler50" && password.value == "travel") {
-        currentTraveler = travelerRepo.getTraveler(50);
-        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(50));
-        currentUserID = currentTraveler.id;
-        renderDisplay(traveler, destRepo, tripRepo);
-        MicroModal.close("modal-1");
-    } else if (username.value == "agency" && password.value == "travel") {
-        renderAgencyDisplay();
-        MicroModal.close("modal-1");
-    } else if (username.value && password.value) {
-        currentTraveler = travelerRepo.getTraveler(Math.floor(Math.random() * 50));
-        currentUserID = currentTraveler.id;
-        traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentUserID));
-        renderDisplay(traveler, destRepo, tripRepo);
-        MicroModal.close("modal-1");        
+function validateUsername(username) {
+    const usernameWord = username.substring(0, 8);
+    const usernameID = username.substring(8);
+    if (username === "") {
+      alert("Username required");
+    } else if (
+      usernameWord === "traveler" &&
+      usernameID <= 50 &&
+      usernameID >= 1 &&
+      username.length == 10
+    ) {
+      return usernameID;
+    } else {
+      alert("Username not found!");
     };
-};
+  };
+
+function validatePassword(password) {
+    if (password === "") {
+      alert("Please enter a password");
+    } else if (password !== "travel") {
+      alert("Invalid password");
+    } else if (password === "travel") {
+      return true;
+    };
+  };
+
+function validateForm() {
+    if(startDate.value && endDate.value) {
+      submit.disabled = false;
+      submit.className = "submit new-trip-button active";
+    } else {
+        submit.className = "submit new-trip-button"
+    };
+  };
+
+  function disableButton() {
+    proposedTripContainer.className = "proposed-trip-cost hidden";
+    proposedTrip.className = "proposed-trip"
+    submit.className = "submit new-trip-button";
+    submit.disabled = true;
+  };
+
+function loginUser(event) {
+    event.preventDefault();
+    const userID = validateUsername(username.value);
+    const passwordValid = validatePassword(password.value);
+    if (userID === undefined || !passwordValid) {
+      return;
+    };
+    fetchData(`http://localhost:3001/api/v1/travelers/${userID}`).then(data => {
+      currentTraveler = new Traveler(data.id, data.name, data.travelerType, tripRepo.returnAllUserTrips(data.id));
+        showAnnualCost();
+        renderDisplay(currentTraveler);
+        console.log(currentTraveler)
+        MicroModal.close("modal-1");
+    });
+  };
 
 function submitTrip(e) {
     if (e){
@@ -99,58 +128,41 @@ function submitTrip(e) {
     }
     let start = dayjs(startDate.value);
     let end = dayjs(endDate.value);
-    let date = dayjs(start).format("YYYY/MM/DD");
-    let duration = end.diff(start, "day");
-    let num = parseInt(numTravelers.value);
-    let destName = destinationInput.value;
-    let destID = destRepo.getDestByName(destName);
-    let destObj = destRepo.destinations[destID];
+    let destID = destRepo.getDestByName(destinationInput.value);
     let newTripData = {
         "id": tripRepo.trips.length + 1,
-        "userID": currentUserID,
+        "userID": currentTraveler.id,
         "destinationID": destID,
-        "travelers": num,
-        "date": date,
-        "duration": duration,
+        "travelers": parseInt(numTravelers.value),
+        "date": dayjs(start).format("YYYY/MM/DD"),
+        "duration": end.diff(start, "day"),
         "status": "pending",
         "suggestedActivities": [],
         "tripCost": 0,
         "category": "",
     };
     let newTrip = new Trip(newTripData)
-    newTrip.getTripCost(destObj);
-    newTrip.getTripCategory(destObj);
-    let costObject = showTripCost(destObj, newTrip)
-    animateShowCost(costObject)
-    return newTrip
+    newTrip.getTripCost(destRepo.destinations[destID]);
+    let costObject = showTripCost(destRepo.destinations[destID], newTrip);
+    animateShowCost(costObject);
+    return newTrip;
 };
-
-function validateForm() {
-    if(startDate.value && endDate.value) {
-      submit.disabled = false;
-    };
-  };
 
 function postTrip() {
    let postObj = submitTrip();
    postData(postObj)
     .then(object => {
         fetchData("http://localhost:3001/api/v1/trips").then(data => {
-            tripRepo = new TripRepo(data.trips);
-            traveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentUserID));
-            renderDisplay(traveler, destRepo, tripRepo);
+            let objects = data.trips.map(trip => new Trip(trip));
+            tripRepo = new TripRepo(objects);
+            currentTraveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentTraveler.id));
+            renderDisplay(currentTraveler);
         });
     });
 };
 
 //---        DOM
-function renderDisplay(traveler, destRepo, tripRepo) {
-    resetDisplay();
-    renderTraveler(traveler, destRepo, tripRepo)
-};
-
-function resetDisplay() {
-    welcomeUser.innerHTML = "";
+function renderDisplay(traveler) {
     travelerPastTrips.innerHTML = "";
     travelerFutureTrips.innerHTML = "";
     travelerPendingTrips.innerHTML = "";
@@ -159,62 +171,74 @@ function resetDisplay() {
     agencyDisplayWrapper.className = "agency-display-wrapper hidden";
     agencyDashboard.className = "agency-dashboard hidden";
     proposedTripContainer.className = "proposed-trip-cost hidden";
+    newTripForm.classList.remove("hidden");
+    newTripForm.classList.add("appear");
+    welcomeUser.innerText = `Welcome, ${traveler.name}!`;
+
+    insertImages(traveler);
 };
 
-function renderTraveler(traveler, destRepo, tripRepo) {
-    welcomeUser.innerHTML = `Welcome, ${traveler.name}!`;
-    let tripsThisYear = tripRepo.getTripsThisYear(traveler.trips);
-    let cost = tripRepo.getAnnualCost(tripsThisYear);
-    let string = `This Year's Expenses: $${cost}`;
-    annualCost.innerHTML = string;
-    renderAnimation();
+function insertImages(traveler) {
     let pastTrips = [];
     let futureTrips = [];
     let pendingTrips = [];
     traveler.trips.forEach(trip => {
-        let trippy = new Trip (trip)
-        if (trippy.getTripCategory() == "past"){
-            pastTrips.push(trip.destinationID);
-        } else if (trippy.getTripCategory() == "upcoming"){
-            futureTrips.push(trip.destinationID);
-        } else if (trippy.getTripCategory() == "pending"){
-            pendingTrips.push(trip.destinationID);
-        }
+        if(!trip.category){
+            trip.getTripCategory();
+        };
+        if (trip.category == "past"){
+            pastTrips.push({
+                "destinationID": trip.destinationID,
+                "tripID": trip.id,
+                "date": trip.date,
+            });
+        } else if (trip.category == "upcoming"){
+            futureTrips.push({
+                "destinationID": trip.destinationID,
+                "tripID": trip.id,
+                "date": trip.date,
+            });
+        } else if (trip.category == "pending"){
+            pendingTrips.push({
+                "destinationID": trip.destinationID,
+                "tripID": trip.id,
+                "date": trip.date,
+            });
+        };
     });
-    allPastDestinations = destRepo.getDestById(pastTrips);
-    allFutureDestinations = destRepo.getDestById(futureTrips);
-    allPendingDestinations = destRepo.getDestById(pendingTrips);
-    createImageNodes(allPastDestinations, "past");
-    createImageNodes(allFutureDestinations, "future");
-    createImageNodes(allPendingDestinations, "pending");
+    let allPastDestinations = destRepo.getDestById(pastTrips);
+    let allFutureDestinations = destRepo.getDestById(futureTrips);
+    let allPendingDestinations = destRepo.getDestById(pendingTrips);
+    createImageNodes(allPastDestinations, "past", pastTrips);
+    createImageNodes(allFutureDestinations, "future", futureTrips);
+    createImageNodes(allPendingDestinations, "pending", pendingTrips);
 };
 
-function renderAnimation(){
-    newTripForm.classList.remove("hidden");
-    newTripForm.classList.add("appear");
+function showAnnualCost() {
+    let tripsThisYear = tripRepo.getTripsThisYear(currentTraveler.trips);
+    tripsThisYear.forEach(trip => {
+        let thisDest = destRepo.getDestByNumber(trip.destinationID);
+        trip.getTripCost(thisDest)
+    });
+    annualCost.innerHTML = `This Year's Expenses: $${tripRepo.getAnnualCost(tripsThisYear)}`;
 };
 
 function animateShowCost(costObj) {
     if (proposedTripContainer.classList.contains("appear")){
-        resetNewTripAnimations();
+        proposedTripContainer.classList.add("hidden");
+        proposedTripContainer.classList.remove("appear");    
     };
     newTripForm.classList.add("show-cost");
-    proposedTrip.classList.add("increase-margin");
+    proposedTrip.classList.add("increase-margin", "appear");
+    proposedTripContainer.classList.remove("hidden");
     flightCost.innerText = `Flight Cost: $${costObj.flight}`;
     lodgingCost.innerText = `Lodging Cost: $${costObj.lodging}`;
     proposedTripSum.innerText = `Cost: $${costObj.sum}`;
     proposedTripTotal.innerText = `Total + Agent's Fee: $${costObj.sumFee}`;
-    proposedTripContainer.classList.remove("hidden");
-    proposedTripContainer.classList.add("appear");
-};
-
-function resetNewTripAnimations() {
-    proposedTripContainer.classList.add("hidden");
-    proposedTripContainer.classList.remove("appear");
 };
 
 function addDestinationOptions(destinationsRepo) {
-    let destinations = destinationsRepo.destinations
+    let destinations = destinationsRepo.destinations;
     let destinationList = destinations.map(destination => {
         return destination.destination;
     });
@@ -230,30 +254,41 @@ function addDestinationOptions(destinationsRepo) {
         };
     });
     sortedList.forEach((destination, index) => {
-        let node = document.createElement("option")
-        node.value = destination
-        node.innerText = destination
-        destinationSelect.appendChild(node)
+        let node = document.createElement("option");
+        node.value = destination;
+        node.innerText = destination;
+        destinationSelect.appendChild(node);
     });
 };
 
-function createImageNodes(trips, when) {
-    trips.forEach(function(destination, index){
+function createImageNodes(trips, when, tripObs) {
+    tripObs.forEach(object => {
+        let destination = destRepo.getDestByNumber(object.destinationID);
+        let newDiv = document.createElement("div");
+        let textNode = document.createElement("p");
         let imageNode = document.createElement("img");
-        let classString = `img${index}`;
-        imageNode.classList.add(classString);
-        imageNode.classList.add("traveler-image");
+        let textString = `Destination: ${destination.destination}<br>Date: ${object.date}`;
+
+        newDiv.classList.add("traveler-image");
+        textNode.classList.add("image-text");
+        imageNode.classList.add("img");
+
+        textNode.innerHTML = textString;
         imageNode.src = destination.image;
         imageNode.alt = destination.alt;
-        imageNode.tabIndex = "0";       
+        imageNode.tabIndex = "0";  
+
+        newDiv.appendChild(textNode);
+        newDiv.appendChild(imageNode);
+
         if (when === "past") {
-            travelerPastTrips.appendChild(imageNode);
+            travelerPastTrips.appendChild(newDiv);
         };
         if (when === "future") {
-            travelerFutureTrips.appendChild(imageNode);
+            travelerFutureTrips.appendChild(newDiv);
         };
         if (when === "pending") {
-            travelerPendingTrips.appendChild(imageNode);
+            travelerPendingTrips.appendChild(newDiv);
         };
     });
 };
@@ -267,12 +302,10 @@ function showTripCost(destObj, newTrip) {
         "flight": flightCost,
         "lodging": lodgingCost,
         "sum": (Math.round(sum * 10) / 10),
-        "sumFee": (Math.round(sumFee * 10) / 10)
+        "sumFee": (Math.round(sumFee * 10) / 10),
     };
     return object;
 };
-
-
 
 
 

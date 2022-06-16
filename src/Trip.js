@@ -18,6 +18,7 @@ class Trip {
         let sumFlight = destination.estimatedFlightCostPerPerson * this.travelers;
         let totalSum = sumLodging + sumFlight;
         this.tripCost = totalSum * 1.1;
+        return this.tripCost;
       };
     getTripCategory = () => {
         if (this.status === "pending") {
