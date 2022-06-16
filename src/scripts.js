@@ -18,6 +18,11 @@ let tripRepo;
 let destRepo;
 
 // QUERY SELECTORS
+let allUserTripsDisplay = document.getElementById("user-nav");
+let pastContainer = document.getElementById("past-div");
+let futureContainer = document.getElementById("future-div");
+let pendingContainer = document.getElementById("pending-div");
+let expenseContainer = document.getElementById("annual-cost-div");
 const travelerPastTrips = document.getElementById("traveler-trips-display-past");
 const travelerFutureTrips = document.getElementById("traveler-trips-display-upcoming");
 const travelerPendingTrips = document.getElementById("traveler-trips-display-pending");
@@ -306,6 +311,63 @@ function showTripCost(destObj, newTrip) {
     };
     return object;
 };
+
+allUserTripsDisplay.addEventListener("click", function(event) {
+    if (event.target.value == "past" && pastContainer.classList.contains("hidden")){
+        console.log("trigger past")
+        pastContainer.classList.remove("hidden");
+        pastContainer.classList.add("appear");
+        if (!futureContainer.classList.contains("hidden")){
+            futureContainer.classList.add("hidden");
+        }
+        if (!pendingContainer.classList.contains("hidden")){
+            pendingContainer.classList.add("hidden");
+        }
+        if (!expenseContainer.classList.contains("hidden")){
+            expenseContainer.classList.add("hidden");
+        };
+    };
+    if (event.target.value == "upcoming" && futureContainer.classList.contains("hidden")){
+        futureContainer.classList.remove("hidden");
+        futureContainer.classList.add("appear");
+        if (!pastContainer.classList.contains("hidden")){
+            pastContainer.classList.add("hidden");
+        }
+        if (!pendingContainer.classList.contains("hidden")){
+            pendingContainer.classList.add("hidden");
+        }
+        if (!expenseContainer.classList.contains("hidden")){
+            expenseContainer.classList.add("hidden");
+        };
+    };
+    if (event.target.value == "pending" && pendingContainer.classList.contains("hidden")){
+        pendingContainer.classList.remove("hidden");
+        pendingContainer.classList.add("appear");
+        if (!futureContainer.classList.contains("hidden")){
+            futureContainer.classList.add("hidden");
+        }
+        if (!pastContainer.classList.contains("hidden")){
+            pastContainer.classList.add("hidden");
+        }
+        if (!expenseContainer.classList.contains("hidden")){
+            expenseContainer.classList.add("hidden");
+        };
+    };
+    if (event.target.value == "expenses" && expenseContainer.classList.contains("hidden")){
+        expenseContainer.classList.remove("hidden");
+        expenseContainer.classList.add("appear");
+        if (!futureContainer.classList.contains("hidden")){
+            futureContainer.classList.add("hidden");
+        }
+        if (!pendingContainer.classList.contains("hidden")){
+            pendingContainer.classList.add("hidden");
+        }
+        if (!pastContainer.classList.contains("hidden")){
+            pastContainer.classList.add("hidden");
+        };
+    };
+});
+
 
 
 
