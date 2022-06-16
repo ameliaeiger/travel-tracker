@@ -112,7 +112,6 @@ function loginUser(event) {
       currentTraveler = new Traveler(data.id, data.name, data.travelerType, tripRepo.returnAllUserTrips(data.id));
       console.log(currentTraveler.trips)
         console.log(currentTraveler);
-        // renderDisplay(currentTraveler, destRepo, tripRepo);
         showAnnualCost();
         renderTraveler(currentTraveler, destRepo, tripRepo);
         MicroModal.close("modal-1");
@@ -177,19 +176,18 @@ function resetDisplay() {
     proposedTripContainer.className = "proposed-trip-cost hidden";
 };
 
-function renderTraveler(traveler, destRepo, tripRepo) {
+function renderTraveler(traveler, destRepo) {
     resetDisplay();
-    renderAnimation();
+    newTripForm.classList.remove("hidden");
+    newTripForm.classList.add("appear");
     welcomeUser.innerHTML = `Welcome, ${traveler.name}!`;
     let pastTrips = [];
     let futureTrips = [];
     let pendingTrips = [];
     traveler.trips.forEach(trip => {
-        console.log("Trip: ", trip)
         if(!trip.category){
             trip.getTripCategory()
         };
-        // let trippy = new Trip (trip)
         if (trip.category == "past"){
             pastTrips.push(trip.destinationID);
         } else if (trip.category == "upcoming"){
@@ -207,25 +205,19 @@ function renderTraveler(traveler, destRepo, tripRepo) {
 };
 
 function showAnnualCost() {
-    console.log("Current Traveler Trips: ", currentTraveler.trips)
     let tripsThisYear = tripRepo.getTripsThisYear(currentTraveler.trips);
-    console.log("Trips This Year: ", tripsThisYear)
     tripsThisYear.forEach(trip => {
-        let tripID = trip.destinationID;
-        let thisDest = destRepo.getDestByNumber(tripID);
+        let thisDest = destRepo.getDestByNumber(trip.destinationID);
         trip.getTripCost(thisDest)
-    })
-
+    });
     let cost = tripRepo.getAnnualCost(tripsThisYear);
-    console.log(cost)
-    let string = `This Year's Expenses: $${cost}`;
-    annualCost.innerHTML = string;
+    annualCost.innerHTML = `This Year's Expenses: $${cost}`;
 };
 
-function renderAnimation(){
-    newTripForm.classList.remove("hidden");
-    newTripForm.classList.add("appear");
-};
+// function renderAnimation(){
+//     newTripForm.classList.remove("hidden");
+//     newTripForm.classList.add("appear");
+// };
 
 function animateShowCost(costObj) {
     if (proposedTripContainer.classList.contains("appear")){
