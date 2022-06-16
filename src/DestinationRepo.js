@@ -23,6 +23,9 @@ class DestinationRepo {
         let result = this.destinations.find(destination => destination.destination.includes(cityName));
         return result.id
     };
+    getDestByNumber(num){
+        return this.destinations.find(destination => num == destination.id)
+    }
 };
 
 export default DestinationRepo;

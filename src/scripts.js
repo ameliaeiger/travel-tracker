@@ -50,7 +50,7 @@ const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
 // EVENT LISTENERS
-window.addEventListener("load", toggleLogin);
+// window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
 requestLogin.addEventListener("click", toggleLogin);
 login.addEventListener("click", loginUser);
@@ -60,10 +60,15 @@ newTripForm.addEventListener("input", validateForm);
 // FUNCTIONS
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
     .then(data => {
+
+        let objects = data[1].trips.map(trip => new Trip(trip))
+        tripRepo = new TripRepo(objects);
+
         travelerRepo = new TravelerRepo(data[0].travelers);
-        tripRepo = new TripRepo(data[1].trips);
+        // tripRepo = new TripRepo(data[1].trips);
         destRepo = new DestinationRepo(data[2].destinations);
         addDestinationOptions(destRepo);
+        toggleLogin()
 });
 
 function toggleLogin() {
@@ -105,8 +110,10 @@ function loginUser(event) {
     };
     fetchData(`http://localhost:3001/api/v1/travelers/${userID}`).then(data => {
       currentTraveler = new Traveler(data.id, data.name, data.travelerType, tripRepo.returnAllUserTrips(data.id));
+      console.log(currentTraveler.trips)
         console.log(currentTraveler);
         // renderDisplay(currentTraveler, destRepo, tripRepo);
+        showAnnualCost();
         renderTraveler(currentTraveler, destRepo, tripRepo);
         MicroModal.close("modal-1");
     });
@@ -189,10 +196,6 @@ function renderTraveler(traveler, destRepo, tripRepo) {
     resetDisplay();
     renderAnimation();
     welcomeUser.innerHTML = `Welcome, ${traveler.name}!`;
-    let tripsThisYear = tripRepo.getTripsThisYear(traveler.trips);
-    let cost = tripRepo.getAnnualCost(tripsThisYear);
-    let string = `This Year's Expenses: $${cost}`;
-    annualCost.innerHTML = string;
     let pastTrips = [];
     let futureTrips = [];
     let pendingTrips = [];
@@ -212,6 +215,23 @@ function renderTraveler(traveler, destRepo, tripRepo) {
     createImageNodes(allPastDestinations, "past");
     createImageNodes(allFutureDestinations, "future");
     createImageNodes(allPendingDestinations, "pending");
+};
+
+function showAnnualCost() {
+    console.log("Current Traveler Trips: ", currentTraveler.trips)
+    let tripsThisYear = tripRepo.getTripsThisYear(currentTraveler.trips);
+    console.log("Trips This Year: ", tripsThisYear)
+    tripsThisYear.forEach(trip => {
+        let tripID = trip.destinationID;
+        let thisDest = destRepo.getDestByNumber(tripID);
+        let cost = trip.getTripCost(thisDest)
+    })
+
+    let cost = tripRepo.getAnnualCost(tripsThisYear);
+    console.log(cost)
+
+    let string = `This Year's Expenses: $${cost}`;
+    annualCost.innerHTML = string;
 };
 
 function renderAnimation(){
