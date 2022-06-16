@@ -123,18 +123,9 @@ function submitTrip(e) {
     if (e){
     e.preventDefault();
     }
-        // let duration = end.diff(start, "day");
-    // let date = dayjs(start).format("YYYY/MM/DD");
-    // let num = parseInt(numTravelers.value);
-    // let destName = destinationInput.value;
-    // let destObj = destRepo.destinations[destID];
-
     let start = dayjs(startDate.value);
     let end = dayjs(endDate.value);
-
     let destID = destRepo.getDestByName(destinationInput.value);
-
-
     let newTripData = {
         "id": tripRepo.trips.length + 1,
         "userID": currentTraveler.id,
@@ -149,8 +140,6 @@ function submitTrip(e) {
     };
     let newTrip = new Trip(newTripData)
     newTrip.getTripCost(destRepo.destinations[destID]);
-    // newTrip.getTripCategory(destRepo.destinations[destID]);
-    // newTrip.getTripCategory();
     let costObject = showTripCost(destRepo.destinations[destID], newTrip)
     animateShowCost(costObject)
     return newTrip
@@ -176,11 +165,6 @@ function postTrip() {
 };
 
 //---        DOM
-// function renderDisplay(currentTraveler, destRepo, tripRepo) {
-//     resetDisplay();
-//     renderTraveler(currentTraveler, destRepo, tripRepo);
-// };
-
 function resetDisplay() {
     welcomeUser.innerHTML = "";
     travelerPastTrips.innerHTML = "";
@@ -234,7 +218,6 @@ function showAnnualCost() {
 
     let cost = tripRepo.getAnnualCost(tripsThisYear);
     console.log(cost)
-
     let string = `This Year's Expenses: $${cost}`;
     annualCost.innerHTML = string;
 };
@@ -258,11 +241,6 @@ function animateShowCost(costObj) {
     proposedTripSum.innerText = `Cost: $${costObj.sum}`;
     proposedTripTotal.innerText = `Total + Agent's Fee: $${costObj.sumFee}`;
 };
-
-// function resetNewTripAnimations() {
-//     proposedTripContainer.classList.add("hidden");
-//     proposedTripContainer.classList.remove("appear");
-// };
 
 function addDestinationOptions(destinationsRepo) {
     let destinations = destinationsRepo.destinations;
@@ -290,38 +268,26 @@ function addDestinationOptions(destinationsRepo) {
 
 function createImageNodes(trips, when) {
     trips.forEach(function(destination, index){
-        let newDiv = document.createElement("div")
+        let newDiv = document.createElement("div");
         let textNode = document.createElement("p");
         textNode.innerText = destination.destination;
-
-        newDiv.appendChild(textNode)
-
-        console.log(textNode, index)
-        
+        textNode.classList.add("image-text")
+        newDiv.appendChild(textNode);
         let imageNode = document.createElement("img");
-        let classString = `img${index}`;
-        imageNode.classList.add(classString);
-        // imageNode.classList.add("traveler-image");
+        imageNode.classList.add("img");
         imageNode.src = destination.image;
         imageNode.alt = destination.alt;
         imageNode.tabIndex = "0";   
-        newDiv.appendChild(imageNode)
-        newDiv.classList.add("traveler-image")
-        
-    
+        newDiv.appendChild(imageNode);
+        newDiv.classList.add("traveler-image");
         if (when === "past") {
-            // travelerPastTrips.appendChild(imageNode);
             travelerPastTrips.appendChild(newDiv);
         };
         if (when === "future") {
-            // travelerFutureTrips.appendChild(imageNode);
             travelerFutureTrips.appendChild(newDiv);
-
         };
         if (when === "pending") {
-            // travelerPendingTrips.appendChild(imageNode);
             travelerPendingTrips.appendChild(newDiv);
-
         };
     });
 };
@@ -335,7 +301,7 @@ function showTripCost(destObj, newTrip) {
         "flight": flightCost,
         "lodging": lodgingCost,
         "sum": (Math.round(sum * 10) / 10),
-        "sumFee": (Math.round(sumFee * 10) / 10)
+        "sumFee": (Math.round(sumFee * 10) / 10),
     };
     return object;
 };
