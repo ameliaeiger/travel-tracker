@@ -32,11 +32,14 @@
   }
 }
 
+.border {
+  border-bottom: 2px solid gainsboro !important;
+}
+
 #user-nav {
   flex-direction: row;
   justify-content: center;
   margin: 0px;
-  padding: 5px;
   width: 100%;
 }
 
@@ -54,16 +57,6 @@
   /* background-color: black !important; */
   border-bottom: 2px solid gainsboro;
 }
-
-/* .left {
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-}
-
-.right {
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-} */
 
 .appear {
   animation: appear;
