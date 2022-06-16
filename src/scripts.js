@@ -83,7 +83,8 @@ function validateUsername(username) {
     } else if (
       usernameWord === "traveler" &&
       usernameID <= 50 &&
-      usernameID >= 1
+      usernameID >= 1 &&
+      username.length == 10
     ) {
       return usernameID;
     } else {
