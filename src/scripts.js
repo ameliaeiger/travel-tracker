@@ -16,9 +16,9 @@ let currentTraveler;
 let travelerRepo;
 let tripRepo;
 let destRepo;
-let allPastDestinations;
-let allFutureDestinations;
-let allPendingDestinations;
+// let allPastDestinations;
+// let allFutureDestinations;
+// let allPendingDestinations;
 
 // QUERY SELECTORS
 const travelerPastTrips = document.getElementById("traveler-trips-display-past");
@@ -177,19 +177,31 @@ function insertImages(traveler) {
             trip.getTripCategory();
         };
         if (trip.category == "past"){
-            pastTrips.push(trip.destinationID);
+            pastTrips.push({
+                "destinationID": trip.destinationID,
+                "tripID": trip.id,
+                "date": trip.date,
+            });
         } else if (trip.category == "upcoming"){
-            futureTrips.push(trip.destinationID);
+            futureTrips.push({
+                "destinationID": trip.destinationID,
+                "tripID": trip.id,
+                "date": trip.date,
+            });
         } else if (trip.category == "pending"){
-            pendingTrips.push(trip.destinationID);
+            pendingTrips.push({
+                "destinationID": trip.destinationID,
+                "tripID": trip.id,
+                "date": trip.date,
+            });
         };
     });
-    allPastDestinations = destRepo.getDestById(pastTrips);
-    allFutureDestinations = destRepo.getDestById(futureTrips);
-    allPendingDestinations = destRepo.getDestById(pendingTrips);
-    createImageNodes(allPastDestinations, "past");
-    createImageNodes(allFutureDestinations, "future");
-    createImageNodes(allPendingDestinations, "pending");
+    let allPastDestinations = destRepo.getDestById(pastTrips);
+    let allFutureDestinations = destRepo.getDestById(futureTrips);
+    let allPendingDestinations = destRepo.getDestById(pendingTrips);
+    createImageNodes(allPastDestinations, "past", pastTrips);
+    createImageNodes(allFutureDestinations, "future", futureTrips);
+    createImageNodes(allPendingDestinations, "pending", pendingTrips);
 };
 
 function showAnnualCost() {
@@ -239,20 +251,31 @@ function addDestinationOptions(destinationsRepo) {
     });
 };
 
-function createImageNodes(trips, when) {
-    trips.forEach(function(destination, index){
+function createImageNodes(trips, when, tripObs) {
+    console.log(tripObs)
+
+    tripObs.forEach(object => {
+        console.log(object.destinationID);
+        let destination = destRepo.getDestByNumber(object.destinationID);
         let newDiv = document.createElement("div");
         let textNode = document.createElement("p");
-        textNode.innerText = destination.destination;
-        textNode.classList.add("image-text")
-        newDiv.appendChild(textNode);
         let imageNode = document.createElement("img");
+        let textString = `Destination: ${destination.destination}<br>Date: ${object.date}`;
+        console.log(textString)
+
+
+        newDiv.classList.add("traveler-image");
+        textNode.classList.add("image-text");
         imageNode.classList.add("img");
+
+        textNode.innerHTML = textString;
         imageNode.src = destination.image;
         imageNode.alt = destination.alt;
         imageNode.tabIndex = "0";   
+
+        newDiv.appendChild(textNode);
         newDiv.appendChild(imageNode);
-        newDiv.classList.add("traveler-image");
+
         if (when === "past") {
             travelerPastTrips.appendChild(newDiv);
         };
