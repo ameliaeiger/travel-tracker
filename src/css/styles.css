@@ -131,7 +131,7 @@ h3 {
 .increase-margin {
   margin-top: 60px;
   animation: increaseMargin;
-  animation-duration: 3s;
+  animation-duration: 1s;
 }
 
 .request-new-trip {

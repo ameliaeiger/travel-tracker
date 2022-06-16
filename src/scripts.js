@@ -1,6 +1,3 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
-
 // LIBRARIES
 const dayjs = require('dayjs');
 import MicroModal from 'micromodal'; 
@@ -8,15 +5,13 @@ import MicroModal from 'micromodal';
 // IMPORTS
 import { allTravelersData, allTripsData, allDestinationsData, postData, fetchData } from './apiCalls';
 import DestinationRepo from './DestinationRepo';
-import Destination from './Destination';
 import TravelerRepo from './TravelerRepo';
 import Traveler from './Traveler';
 import TripRepo from './TripRepo.js';
 import Trip from './Trip.js';
 import './css/styles.css';
-import './images/turing-logo.png';
 
-// GLOBALS
+// GLOBAL VARIABLES
 let currentTraveler;
 let travelerRepo;
 let tripRepo;
@@ -25,6 +20,7 @@ let allPastDestinations;
 let allFutureDestinations;
 let allPendingDestinations;
 
+// QUERY SELECTORS
 const travelerPastTrips = document.getElementById("traveler-trips-display-past");
 const travelerFutureTrips = document.getElementById("traveler-trips-display-upcoming");
 const travelerPendingTrips = document.getElementById("traveler-trips-display-pending");
@@ -50,9 +46,8 @@ const password = document.getElementById("password");
 const welcomeUser = document.getElementById("welcome-user");
 
 // EVENT LISTENERS
-// window.addEventListener("load", toggleLogin);
 submit.addEventListener("click", submitTrip);
-requestLogin.addEventListener("click", toggleLogin);
+requestLogin.addEventListener("click", function(){MicroModal.show("modal-1");});
 login.addEventListener("click", loginUser);
 confirmBooking.addEventListener("click", postTrip);
 newTripForm.addEventListener("input", validateForm);
@@ -60,20 +55,13 @@ newTripForm.addEventListener("input", validateForm);
 // FUNCTIONS
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
     .then(data => {
-
-        let objects = data[1].trips.map(trip => new Trip(trip))
-        tripRepo = new TripRepo(objects);
-
+        let trips = data[1].trips.map(trip => new Trip(trip));
+        tripRepo = new TripRepo(trips);
         travelerRepo = new TravelerRepo(data[0].travelers);
-        // tripRepo = new TripRepo(data[1].trips);
         destRepo = new DestinationRepo(data[2].destinations);
+        MicroModal.show("modal-1");
         addDestinationOptions(destRepo);
-        toggleLogin()
 });
-
-function toggleLogin() {
-    MicroModal.show("modal-1");
-};
 
 function validateUsername(username) {
     const usernameWord = username.substring(0, 8);
@@ -89,7 +77,7 @@ function validateUsername(username) {
       return usernameID;
     } else {
       alert("Username not found!");
-    }
+    };
   };
 
 function validatePassword(password) {
@@ -102,6 +90,12 @@ function validatePassword(password) {
     };
   };
 
+function validateForm() {
+    if(startDate.value && endDate.value) {
+      submit.disabled = false;
+    };
+  };
+
 function loginUser(event) {
     event.preventDefault();
     const userID = validateUsername(username.value);
@@ -111,10 +105,9 @@ function loginUser(event) {
     };
     fetchData(`http://localhost:3001/api/v1/travelers/${userID}`).then(data => {
       currentTraveler = new Traveler(data.id, data.name, data.travelerType, tripRepo.returnAllUserTrips(data.id));
-      console.log(currentTraveler.trips)
-        console.log(currentTraveler);
         showAnnualCost();
-        renderTraveler(currentTraveler, destRepo, tripRepo);
+        renderDisplay(currentTraveler);
+        console.log(currentTraveler)
         MicroModal.close("modal-1");
     });
   };
@@ -145,12 +138,6 @@ function submitTrip(e) {
     return newTrip
 };
 
-function validateForm() {
-    if(startDate.value && endDate.value) {
-      submit.disabled = false;
-    };
-  };
-
 function postTrip() {
    let postObj = submitTrip();
    postData(postObj)
@@ -159,14 +146,13 @@ function postTrip() {
             let objects = data.trips.map(trip => new Trip(trip));
             tripRepo = new TripRepo(objects);
             currentTraveler = new Traveler(currentTraveler.id, currentTraveler.name, currentTraveler.type, tripRepo.returnAllUserTrips(currentTraveler.id));
-            renderTraveler(currentTraveler, destRepo, tripRepo);
+            renderDisplay(currentTraveler);
         });
     });
 };
 
 //---        DOM
-function resetDisplay() {
-    welcomeUser.innerHTML = "";
+function renderDisplay(traveler) {
     travelerPastTrips.innerHTML = "";
     travelerFutureTrips.innerHTML = "";
     travelerPendingTrips.innerHTML = "";
@@ -175,19 +161,20 @@ function resetDisplay() {
     agencyDisplayWrapper.className = "agency-display-wrapper hidden";
     agencyDashboard.className = "agency-dashboard hidden";
     proposedTripContainer.className = "proposed-trip-cost hidden";
-};
-
-function renderTraveler(traveler, destRepo) {
-    resetDisplay();
     newTripForm.classList.remove("hidden");
     newTripForm.classList.add("appear");
-    welcomeUser.innerHTML = `Welcome, ${traveler.name}!`;
+    welcomeUser.innerText = `Welcome, ${traveler.name}!`;
+
+    insertImages(traveler);
+};
+
+function insertImages(traveler) {
     let pastTrips = [];
     let futureTrips = [];
     let pendingTrips = [];
     traveler.trips.forEach(trip => {
         if(!trip.category){
-            trip.getTripCategory()
+            trip.getTripCategory();
         };
         if (trip.category == "past"){
             pastTrips.push(trip.destinationID);
@@ -211,14 +198,8 @@ function showAnnualCost() {
         let thisDest = destRepo.getDestByNumber(trip.destinationID);
         trip.getTripCost(thisDest)
     });
-    let cost = tripRepo.getAnnualCost(tripsThisYear);
-    annualCost.innerHTML = `This Year's Expenses: $${cost}`;
+    annualCost.innerHTML = `This Year's Expenses: $${tripRepo.getAnnualCost(tripsThisYear)}`;
 };
-
-// function renderAnimation(){
-//     newTripForm.classList.remove("hidden");
-//     newTripForm.classList.add("appear");
-// };
 
 function animateShowCost(costObj) {
     if (proposedTripContainer.classList.contains("appear")){
@@ -228,7 +209,6 @@ function animateShowCost(costObj) {
     newTripForm.classList.add("show-cost");
     proposedTrip.classList.add("increase-margin", "appear");
     proposedTripContainer.classList.remove("hidden");
-    // proposedTripContainer.classList.add("appear");
     flightCost.innerText = `Flight Cost: $${costObj.flight}`;
     lodgingCost.innerText = `Lodging Cost: $${costObj.lodging}`;
     proposedTripSum.innerText = `Cost: $${costObj.sum}`;
